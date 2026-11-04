@@ -12,6 +12,7 @@
 		1CC094945B4B8F95550A39AF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A7A9D9DA75CBDA5A306E4 /* RootView.swift */; };
 		20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2ADC4E61158061E19710A4C /* GameModelTests.swift */; };
 		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
+		3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */; };
 		63FBCA393803BBD914137E09 /* RingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC20C61590045F120E5B942 /* RingsView.swift */; };
 		64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270C825AFC31302848C0CFB1 /* GameModel.swift */; };
 		829A5D220D24E8AA285671A9 /* FingerPickKit in Frameworks */ = {isa = PBXBuildFile; productRef = B24816A4773BC0E55DED29FF /* FingerPickKit */; };
@@ -55,6 +56,7 @@
 		C1A20F2E18AE85EF5DC8C636 /* PaletteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteTests.swift; sourceTree = "<group>"; };
 		C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultitouchView.swift; sourceTree = "<group>"; };
 		D1186ABD262D48E8FAE9978B /* HapticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsService.swift; sourceTree = "<group>"; };
+		D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleTimerController.swift; sourceTree = "<group>"; };
 		D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickUITests.swift; sourceTree = "<group>"; };
 		E0433760B2B7C473160DD079 /* FingerPickUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FingerPickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DAD844B6DDDC40C7E5C5D3 /* FingerPickKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = FingerPickKit; path = Packages/FingerPickKit; sourceTree = SOURCE_ROOT; };
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */,
+				D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */,
 				728A7A9D9DA75CBDA5A306E4 /* RootView.swift */,
 			);
 			path = App;
@@ -312,6 +315,7 @@
 				EEAE518EDBA65EE043C66B81 /* FingerPickApp.swift in Sources */,
 				64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */,
 				E8F4E19938834803A6FD4231 /* HapticsService.swift in Sources */,
+				3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */,
 				2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */,
 				9ECADB5EF3C15242FDA0EA12 /* Palette.swift in Sources */,
 				0195BE5506E15EB613F7D703 /* PromptView.swift in Sources */,
@@ -449,6 +453,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FingerPick/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FingerPick;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -492,6 +497,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FingerPick/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FingerPick;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
