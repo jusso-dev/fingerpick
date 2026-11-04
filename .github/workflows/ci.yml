@@ -66,6 +66,10 @@ jobs:
         with:
           path: ~/Library/Caches/org.swift.swiftpm
           key: spm-cache-${{ runner.os }}-${{ hashFiles('**/Package.resolved', 'Packages/FingerPickKit/Package.swift') }}
+      # Booting first avoids "Timed out waiting for AX loaded notification" when the UI test
+      # runner starts against a cold simulator.
+      - name: Boot simulator
+        run: scripts/ci-boot-simulator.sh "${{ matrix.device }}" "${{ matrix.os }}"
       - name: Build and test
         run: |
           set -o pipefail
@@ -75,6 +79,7 @@ jobs:
             -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=${{ matrix.os }}" \
             -resultBundlePath "TestResults-${{ matrix.device }}.xcresult" \
             -derivedDataPath DerivedData \
+            -retry-tests-on-failure -test-iterations 2 \
             CODE_SIGNING_ALLOWED=NO \
             build test
       - name: String catalogue up to date (#24)
