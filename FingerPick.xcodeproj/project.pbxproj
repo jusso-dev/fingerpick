@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1CC094945B4B8F95550A39AF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A7A9D9DA75CBDA5A306E4 /* RootView.swift */; };
 		39071063D41DDC166C93D660 /* FingerPickTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378395BC9226553EC4603CFF /* FingerPickTests.swift */; };
+		4469C34BBD821C2395EC16F7 /* CIFailureCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5228FD4BA79D426609AAA8F8 /* CIFailureCheck.swift */; };
 		829A5D220D24E8AA285671A9 /* FingerPickKit in Frameworks */ = {isa = PBXBuildFile; productRef = B24816A4773BC0E55DED29FF /* FingerPickKit */; };
 		9F44975B5093AE4E276D3CE8 /* FingerPickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */; };
 		C2DBC9C596869085FFDD7CF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		378395BC9226553EC4603CFF /* FingerPickTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickTests.swift; sourceTree = "<group>"; };
 		3B8939C06F03D0A001700F8D /* FingerPick.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FingerPick.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5228FD4BA79D426609AAA8F8 /* CIFailureCheck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIFailureCheck.swift; sourceTree = "<group>"; };
 		6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickApp.swift; sourceTree = "<group>"; };
 		728A7A9D9DA75CBDA5A306E4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		A72CF307AEDE8A289EE2EECF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 		63F417A9F679829BB467A9E4 /* FingerPickTests */ = {
 			isa = PBXGroup;
 			children = (
+				5228FD4BA79D426609AAA8F8 /* CIFailureCheck.swift */,
 				378395BC9226553EC4603CFF /* FingerPickTests.swift */,
 			);
 			path = FingerPickTests;
@@ -267,6 +270,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4469C34BBD821C2395EC16F7 /* CIFailureCheck.swift in Sources */,
 				39071063D41DDC166C93D660 /* FingerPickTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
