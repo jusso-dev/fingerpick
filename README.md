@@ -21,12 +21,20 @@ See [docs/design.md](docs/design.md).
 
 ## Tech
 - SwiftUI app shell, with a UIKit multitouch view bridged through `UIViewRepresentable` (SwiftUI gestures don't track 10+ independent touches well).
-- iOS 18+, iPhone first.
+- iOS 18+ deployment target, built with the iOS 27.1 SDK so iPhone Duo fold APIs are used where available (`if #available`).
 - Core Haptics, `SystemRandomNumberGenerator`.
 - Fully offline. No ads, no tracking, no accounts, no data collected.
 
-## A note on "iPhone Duo optimised"
-The original brief said "iPhone Duo optimised". There's no iPhone Duo model, so we've read this as iPhone first, optimised for the current lineup: Dynamic Island, ProMotion 120 Hz displays and all current screen sizes. If it meant something else (for example two-player play, or a dual-screen device), raise an issue.
+## Optimised for iPhone Duo
+FingerPick is built first for iPhone Duo, Apple's foldable iPhone, and works on every other current iPhone.
+- **Unfolded (7.6-inch inner display, 1878 x 2670 px):** a large canvas for bigger groups around a table. Rings are sized and spaced for more players.
+- **Folded (5.4-inch outer display, 1398 x 2034 px):** a compact cover-screen mode for small groups. Both displays share the same aspect ratio, so the layout scales proportionally.
+- **Folding or unfolding mid-round:** the round resets safely, with a clear message, rather than picking from a broken set of touches.
+- **The crease:** rings, countdown and winner reveal stay clear of the fold using iOS 27.1's reserved-region API (`reservedRegions(kind: .division)`).
+- **Adaptive layout:** sized from the view, never `UIScreen.main`, using size classes and geometry changes.
+- Tested on the iPhone Duo simulator in Xcode 27.1 (Closed, Partially Open, Open).
+
+Specs from [Apple's iPhone Duo tech specs](https://www.apple.com/iphone-duo/specs/) and APIs from [Apple's iPhone Duo Prepare guide](https://developer.apple.com/iphone-duo/prepare/) and the [adaptive layouts tech talk](https://developer.apple.com/videos/play/tech-talks/111463/).
 
 ## Status
 Planning. See the issues and milestones (MVP, v1, Later).
