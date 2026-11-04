@@ -58,4 +58,47 @@ struct GameModelTests {
         #expect(winner.map { model.touches.players.contains($0) } == true)
         #expect(received.contains(.countdownStarted))
     }
+
+    @Test func revealKeepsWinnerAfterFingersLiftAndClearsOnReset() {
+        let clock = ManualClock()
+        let model = makeModel(clock: clock)
+        let fingers = (0..<2).map { _ in NSObject() }
+        for finger in fingers { model.handle(.began(key: ObjectIdentifier(finger), location: .zero)) }
+        clock.time = 1; model.tick()
+        clock.time = 4; model.tick()
+        #expect(model.reveal?.markers.count == 2)
+
+        clock.time = 5
+        for finger in fingers { model.handle(.ended(key: ObjectIdentifier(finger))) }
+        #expect(model.reveal != nil)
+        clock.time = 5.5; model.tick()
+        #expect(model.reveal == nil)
+    }
+
+    @Test func tenRoundsInARowLeaveNoStaleRings() {
+        let clock = ManualClock()
+        let model = makeModel(clock: clock)
+        var lastWinnerColour: Int?
+        for round in 0..<10 {
+            let base = Double(round) * 10
+            let fingers = (0..<3).map { _ in NSObject() }
+            clock.time = base
+            for finger in fingers { model.handle(.began(key: ObjectIdentifier(finger), location: .zero)) }
+            if let lastWinnerColour {
+                // The first finger of the next round doesn't get last round's winning colour.
+                #expect(model.slots.slots.values.min() != lastWinnerColour)
+            }
+            clock.time = base + 1; model.tick()
+            clock.time = base + 4; model.tick()
+            let winner = model.engine.result?.pickedPlayers.first
+            lastWinnerColour = winner.flatMap { model.reveal?.markers[$0]?.colourIndex }
+            clock.time = base + 5
+            for finger in fingers { model.handle(.ended(key: ObjectIdentifier(finger))) }
+            clock.time = base + 6; model.tick()
+            #expect(model.reveal == nil)
+            #expect(model.touches.isEmpty)
+            #expect(model.slots.slots.isEmpty)
+            #expect(model.landedAt.isEmpty)
+        }
+    }
 }

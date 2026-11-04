@@ -21,6 +21,19 @@ struct LiftedRing: Equatable {
     static let fadeDuration: TimeInterval = 0.25
 }
 
+/// A showing result, with each picked player's marker and last position captured at selection,
+/// so it can still be drawn after fingers lift.
+struct Reveal: Equatable {
+    let result: RoundResult
+    let markers: [PlayerID: PlayerMarker]
+    let positions: [PlayerID: CGPoint]
+    let startedAt: TimeInterval
+
+    /// Winning circle growth and losers' fade. The whole reveal finishes in under a second.
+    static let expandDuration: TimeInterval = 0.6
+    static let fadeDuration: TimeInterval = 0.3
+}
+
 /// Main-actor model that turns raw touches into round state for the views.
 @MainActor
 @Observable
@@ -34,6 +47,8 @@ final class GameModel {
     private(set) var liftedRings: [LiftedRing] = []
     /// When the last countdown was cancelled, for the cancel feedback.
     private(set) var countdownCancelledAt: TimeInterval?
+    /// The result being shown, if any.
+    private(set) var reveal: Reveal?
 
     /// Receives every round event (haptics, VoiceOver announcements).
     @ObservationIgnored var onEvents: (([RoundEvent]) -> Void)?
@@ -92,6 +107,17 @@ final class GameModel {
                 landedAt[id] = nil
             case .countdownCancelled:
                 countdownCancelledAt = now
+            case let .selected(result):
+                reveal = Reveal(
+                    result: result,
+                    markers: slots.slots.mapValues(PlayerMarker.init),
+                    positions: touches.positions,
+                    startedAt: now
+                )
+                // Next round, the first finger shouldn't land on last round's winning colour.
+                slots.deprioritise(colours: result.pickedPlayers.compactMap { slots.marker(for: $0)?.colourIndex })
+            case .reset:
+                reveal = nil
             default:
                 break
             }
