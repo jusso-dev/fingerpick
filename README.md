@@ -37,7 +37,9 @@ FingerPick is built first for iPhone Duo, Apple's foldable iPhone, and works on 
 Specs from [Apple's iPhone Duo tech specs](https://www.apple.com/iphone-duo/specs/) and APIs from [Apple's iPhone Duo Prepare guide](https://developer.apple.com/iphone-duo/prepare/) and the [adaptive layouts tech talk](https://developer.apple.com/videos/play/tech-talks/111463/).
 
 ## Building
-Requires Xcode 27.1 or later (iOS 27.1 SDK). The deployment target is iOS 18.
+[![CI](https://github.com/jusso-dev/fingerpick/actions/workflows/ci.yml/badge.svg)](https://github.com/jusso-dev/fingerpick/actions/workflows/ci.yml)
+
+Requires Xcode 27.1 or later (iOS 27.1 SDK). The deployment target is iOS 18. CI runs on GitHub's `xcode-27` image against the iPhone 17 and iPhone Duo simulators.
 
 ```sh
 open FingerPick.xcodeproj            # then Run on an iPhone simulator
