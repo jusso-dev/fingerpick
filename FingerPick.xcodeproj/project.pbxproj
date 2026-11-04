@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1CC094945B4B8F95550A39AF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A7A9D9DA75CBDA5A306E4 /* RootView.swift */; };
+		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
 		39071063D41DDC166C93D660 /* FingerPickTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378395BC9226553EC4603CFF /* FingerPickTests.swift */; };
+		64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270C825AFC31302848C0CFB1 /* GameModel.swift */; };
 		829A5D220D24E8AA285671A9 /* FingerPickKit in Frameworks */ = {isa = PBXBuildFile; productRef = B24816A4773BC0E55DED29FF /* FingerPickKit */; };
 		9F44975B5093AE4E276D3CE8 /* FingerPickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */; };
 		C2DBC9C596869085FFDD7CF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
@@ -33,11 +35,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		270C825AFC31302848C0CFB1 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		378395BC9226553EC4603CFF /* FingerPickTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickTests.swift; sourceTree = "<group>"; };
 		3B8939C06F03D0A001700F8D /* FingerPick.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FingerPick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickApp.swift; sourceTree = "<group>"; };
 		728A7A9D9DA75CBDA5A306E4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		A72CF307AEDE8A289EE2EECF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultitouchView.swift; sourceTree = "<group>"; };
 		D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickUITests.swift; sourceTree = "<group>"; };
 		E0433760B2B7C473160DD079 /* FingerPickUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FingerPickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DAD844B6DDDC40C7E5C5D3 /* FingerPickKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = FingerPickKit; path = Packages/FingerPickKit; sourceTree = SOURCE_ROOT; };
@@ -62,6 +66,14 @@
 				D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */,
 			);
 			path = FingerPickUITests;
+			sourceTree = "<group>";
+		};
+		345901FC8408711F82C47B77 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				270C825AFC31302848C0CFB1 /* GameModel.swift */,
+			);
+			path = Game;
 			sourceTree = "<group>";
 		};
 		63F417A9F679829BB467A9E4 /* FingerPickTests */ = {
@@ -92,9 +104,19 @@
 			isa = PBXGroup;
 			children = (
 				D16FC44460091EA1F014C4DD /* App */,
+				345901FC8408711F82C47B77 /* Game */,
 				9FCEC934526C7670086E47D3 /* Resources */,
+				B02478DE300112898EF88EF0 /* Touch */,
 			);
 			path = FingerPick;
+			sourceTree = "<group>";
+		};
+		B02478DE300112898EF88EF0 /* Touch */ = {
+			isa = PBXGroup;
+			children = (
+				C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */,
+			);
+			path = Touch;
 			sourceTree = "<group>";
 		};
 		B2CD4A44B8D5AA019D4D24F1 = {
@@ -259,6 +281,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEAE518EDBA65EE043C66B81 /* FingerPickApp.swift in Sources */,
+				64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */,
+				2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */,
 				1CC094945B4B8F95550A39AF /* RootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
