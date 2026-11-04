@@ -1,0 +1,185 @@
+{
+  "sourceLanguage" : "en-AU",
+  "strings" : {
+    "%@ #%lld" : {},
+    "%@ %@ %lld" : {
+      "comment" : "Player name: colour, shape, number. For example: Orange triangle 3"
+    },
+    "%@ %lld" : {},
+    "%@ Team %lld" : {},
+    "%@ goes first" : {
+      "comment" : "Order result headline. For example: Orange circle 1 goes first"
+    },
+    "%@ picked" : {
+      "comment" : "Result. For example: Orange circle 1 picked"
+    },
+    "%lld fingers down" : {
+      "comment" : "VoiceOver finger count. Pluralised in the string catalogue.",
+      "localizations" : {
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld finger down"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld fingers down"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld: %@" : {
+      "comment" : "One turn in the spoken order. For example: 1: Orange circle 1"
+    },
+    "Best with up to %lld players" : {
+      "localizations" : {
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Best with up to %lld player"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Best with up to %lld players"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Blue" : {},
+    "Brown" : {},
+    "Countdown cancelled" : {},
+    "Countdown cancelled. Hold still" : {},
+    "Countdown started. Hold still" : {},
+    "Countdown: %lld s" : {},
+    "Done" : {},
+    "Everyone gets a turn number." : {},
+    "Everyone place one finger here and hold still." : {},
+    "Everyone put a finger down" : {},
+    "Everyone puts one finger on the screen. Hold still, and FingerPick picks someone." : {},
+    "Got it" : {},
+    "Green" : {},
+    "Grey" : {},
+    "Haptics" : {},
+    "Hold still" : {},
+    "Minimum fingers: %lld" : {},
+    "Mode" : {},
+    "Needs at least %lld fingers, so someone is left out." : {
+      "localizations" : {
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Needs at least %lld finger, so someone is left out."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Needs at least %lld fingers, so someone is left out."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "New round. Everyone put a finger down" : {},
+    "One person is picked." : {},
+    "One winner" : {},
+    "Orange" : {},
+    "Phone folded, everyone put your fingers back down" : {},
+    "Pick" : {},
+    "Pink" : {},
+    "Play area" : {},
+    "Purple" : {},
+    "Red" : {},
+    "Round" : {},
+    "Screen rotated, everyone put your fingers back down" : {},
+    "Settings" : {},
+    "Several winners" : {},
+    "Sky blue" : {},
+    "Split into %lld teams" : {
+      "comment" : "Teams result headline",
+      "localizations" : {
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Split into %lld team"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Split into %lld teams"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Team %lld: %@" : {
+      "comment" : "One team in the spoken result. For example: Team 1: Orange circle 1 and Blue square 5"
+    },
+    "Teams" : {},
+    "Teams differ in size by one at most." : {},
+    "Teams: %lld" : {},
+    "Turn order" : {},
+    "Waiting for at least %lld fingers" : {
+      "localizations" : {
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Waiting for at least %lld finger"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Waiting for at least %lld fingers"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Winners: %lld" : {},
+    "Yellow" : {},
+    "circle" : {},
+    "diamond" : {},
+    "heart" : {},
+    "hexagon" : {},
+    "pentagon" : {},
+    "seal" : {},
+    "shield" : {},
+    "square" : {},
+    "star" : {},
+    "triangle" : {}
+  },
+  "version" : "1.0"
+}

@@ -13,6 +13,7 @@
 		20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2ADC4E61158061E19710A4C /* GameModelTests.swift */; };
 		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
 		39BB148A0DF041A613AB8A1E /* ResultTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */; };
+		3DB23DD3C580DBA440388556 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 766D098D0E94E15C08E34E94 /* Localizable.xcstrings */; };
 		3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */; };
 		4F9BB03307A778CE5420B58A /* GameSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */; };
 		63FBCA393803BBD914137E09 /* RingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC20C61590045F120E5B942 /* RingsView.swift */; };
@@ -64,6 +65,7 @@
 		6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickApp.swift; sourceTree = "<group>"; };
 		728A7A9D9DA75CBDA5A306E4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		7330B8F9D840213AE446A011 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		766D098D0E94E15C08E34E94 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTextTests.swift; sourceTree = "<group>"; };
 		A72CF307AEDE8A289EE2EECF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldHandlingTests.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				A72CF307AEDE8A289EE2EECF /* Assets.xcassets */,
+				766D098D0E94E15C08E34E94 /* Localizable.xcstrings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2DBC9C596869085FFDD7CF6 /* Assets.xcassets in Resources */,
+				3DB23DD3C580DBA440388556 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,12 +491,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
@@ -620,11 +626,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
