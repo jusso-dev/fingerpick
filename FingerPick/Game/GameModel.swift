@@ -112,6 +112,15 @@ final class GameModel {
         }
     }
 
+    /// True on the empty waiting screen, where controls such as Settings may show.
+    var isIdle: Bool { touches.isEmpty && reveal == nil && engine.phase == .waiting }
+
+    func updateConfiguration(_ configuration: RoundConfiguration) {
+        guard configuration != engine.configuration else { return }
+        let now = clock.now()
+        apply(engine.updateConfiguration(configuration, at: now), at: now)
+    }
+
     func updateLayout(_ newLayout: PlayLayout) {
         guard newLayout != layout else { return }
         let old = layout.size
