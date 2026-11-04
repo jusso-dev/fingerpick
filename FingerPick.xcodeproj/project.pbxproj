@@ -14,6 +14,7 @@
 		20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2ADC4E61158061E19710A4C /* GameModelTests.swift */; };
 		25811B7A6B50218545F32A06 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 766D098D0E94E15C08E34E94 /* Localizable.xcstrings */; };
 		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
+		35230AC179A789DDC473B626 /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E19656FB68DAEAC81F1E5 /* HistoryStore.swift */; };
 		367EAB65541AB3DB1C6FF164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
 		39BB148A0DF041A613AB8A1E /* ResultTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */; };
 		3DB23DD3C580DBA440388556 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 766D098D0E94E15C08E34E94 /* Localizable.xcstrings */; };
@@ -22,12 +23,14 @@
 		4F9BB03307A778CE5420B58A /* GameSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */; };
 		63FBCA393803BBD914137E09 /* RingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC20C61590045F120E5B942 /* RingsView.swift */; };
 		64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270C825AFC31302848C0CFB1 /* GameModel.swift */; };
+		659C3A682E032DF747771043 /* HistoryStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DB38DAC778224D3BA059A1 /* HistoryStoreTests.swift */; };
 		69164DDDFE9E18BEAE8E343B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330B8F9D840213AE446A011 /* SettingsView.swift */; };
 		6B297E27ADAD27764C666584 /* AppStoreScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BE96797584F91FBF4A1F92 /* AppStoreScreenshots.swift */; };
 		6F7610710A9FCD686B2169D9 /* AccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BB6A3C223C63DE83ED310D /* AccessibilityTests.swift */; };
 		829A5D220D24E8AA285671A9 /* FingerPickKit in Frameworks */ = {isa = PBXBuildFile; productRef = B24816A4773BC0E55DED29FF /* FingerPickKit */; };
 		8527EF39B567DF673AA44C52 /* FirstRunHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */; };
 		88C47ED56C19E7C6AABBFE40 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89A170E673484673B78C820 /* LiveActivityController.swift */; };
+		8FF69138CBAA5579AF535084 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FCED24A3FA48CD5B6A9B24A /* HistoryView.swift */; };
 		9029EAE78BCD7D512FD6247B /* FingerPickWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B1A921C5670973EFEA8F6C /* FingerPickWidgets.swift */; };
 		96EB1C28B8F343A8CF2A94D5 /* FoldHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */; };
 		9C2621B8AFC58F62FF3B68F3 /* ResultActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED501646F1AAE5DB9E18C933 /* ResultActivityAttributes.swift */; };
@@ -88,6 +91,7 @@
 		11295CD10F529C3AAB9B5E79 /* Announcer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcer.swift; sourceTree = "<group>"; };
 		19BB6A3C223C63DE83ED310D /* AccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityTests.swift; sourceTree = "<group>"; };
 		1DC20C61590045F120E5B942 /* RingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingsView.swift; sourceTree = "<group>"; };
+		23DB38DAC778224D3BA059A1 /* HistoryStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStoreTests.swift; sourceTree = "<group>"; };
 		270C825AFC31302848C0CFB1 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		3B8939C06F03D0A001700F8D /* FingerPick.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FingerPick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46BE96797584F91FBF4A1F92 /* AppStoreScreenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreScreenshots.swift; sourceTree = "<group>"; };
@@ -100,9 +104,11 @@
 		7330B8F9D840213AE446A011 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		766D098D0E94E15C08E34E94 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		7E133FDB55576AFF3D01CBE7 /* FingerPickWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FingerPickWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FCED24A3FA48CD5B6A9B24A /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTextTests.swift; sourceTree = "<group>"; };
 		89B1A921C5670973EFEA8F6C /* FingerPickWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickWidgets.swift; sourceTree = "<group>"; };
 		914618FA81D0A86A2AC48976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9C3E19656FB68DAEAC81F1E5 /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
 		A6398057F4CA0DE0063ADF05 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A72CF307AEDE8A289EE2EECF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldHandlingTests.swift; sourceTree = "<group>"; };
@@ -187,6 +193,7 @@
 				F2ADC4E61158061E19710A4C /* GameModelTests.swift */,
 				F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */,
 				08017B92C8D4FA710FE26F70 /* HapticsTests.swift */,
+				23DB38DAC778224D3BA059A1 /* HistoryStoreTests.swift */,
 				C1A20F2E18AE85EF5DC8C636 /* PaletteTests.swift */,
 				83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */,
 			);
@@ -298,6 +305,8 @@
 			isa = PBXGroup;
 			children = (
 				69CADE28808792CBB54D18D4 /* GameSettings.swift */,
+				9C3E19656FB68DAEAC81F1E5 /* HistoryStore.swift */,
+				7FCED24A3FA48CD5B6A9B24A /* HistoryView.swift */,
 				7330B8F9D840213AE446A011 /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -468,6 +477,8 @@
 				64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */,
 				FF9D7EE4CD7ACB35832D2975 /* GameSettings.swift in Sources */,
 				E8F4E19938834803A6FD4231 /* HapticsService.swift in Sources */,
+				35230AC179A789DDC473B626 /* HistoryStore.swift in Sources */,
+				8FF69138CBAA5579AF535084 /* HistoryView.swift in Sources */,
 				3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */,
 				88C47ED56C19E7C6AABBFE40 /* LiveActivityController.swift in Sources */,
 				2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */,
@@ -500,6 +511,7 @@
 				20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */,
 				4F9BB03307A778CE5420B58A /* GameSettingsTests.swift in Sources */,
 				0F3894ABDAE4D24917AA257C /* HapticsTests.swift in Sources */,
+				659C3A682E032DF747771043 /* HistoryStoreTests.swift in Sources */,
 				A0B93A63AFC2C14E4884C595 /* PaletteTests.swift in Sources */,
 				39BB148A0DF041A613AB8A1E /* ResultTextTests.swift in Sources */,
 			);

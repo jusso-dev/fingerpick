@@ -13,6 +13,28 @@
     "%@ picked" : {
       "comment" : "Result. For example: Orange circle 1 picked"
     },
+    "%@ · %lld players" : {
+      "localizations" : {
+        "en-AU" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%@ · %lld player"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%@ · %lld players"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld fingers down" : {
       "comment" : "VoiceOver finger count. Pluralised in the string catalogue.",
       "localizations" : {
@@ -64,6 +86,9 @@
     },
     "Blue" : {},
     "Brown" : {},
+    "Clear" : {},
+    "Clear History" : {},
+    "Clear history?" : {},
     "Countdown cancelled" : {},
     "Countdown cancelled. Hold still" : {},
     "Countdown started. Hold still" : {},
@@ -77,6 +102,8 @@
     "Green" : {},
     "Grey" : {},
     "Haptics" : {},
+    "History" : {},
+    "History is stored only on this iPhone." : {},
     "Hold still" : {},
     "Minimum fingers: %lld" : {},
     "Mode" : {},
@@ -103,6 +130,7 @@
       }
     },
     "New round. Everyone put a finger down" : {},
+    "No rounds yet" : {},
     "One person is picked." : {},
     "One winner" : {},
     "Orange" : {},
@@ -113,6 +141,7 @@
     "Play area" : {},
     "Purple" : {},
     "Red" : {},
+    "Results from your last 10 rounds show here." : {},
     "Round" : {},
     "Screen rotated, everyone put your fingers back down" : {},
     "Settings" : {},

@@ -7,6 +7,7 @@ struct RootView: View {
     @State private var idleTimer = IdleTimerController()
     @State private var announcer = Announcer()
     @State private var liveActivity = LiveActivityController()
+    @State private var history = HistoryStore()
     @AppStorage(LiveActivityController.enabledKey) private var liveActivityEnabled = false
     @State private var showsSettings = false
     @AppStorage(Haptics.enabledKey) private var hapticsEnabled = true
@@ -46,7 +47,7 @@ struct RootView: View {
         .animation(.default, value: hasSeenHint)
         .preferredColorScheme(testColorScheme)
         .sheet(isPresented: $showsSettings) {
-            SettingsView()
+            SettingsView(history: history)
                 .presentationDetents([.medium, .large])
         }
         // During a round, edge swipes need a second swipe, and the home indicator and status bar hide.
@@ -74,11 +75,12 @@ struct RootView: View {
             idleTimer.update(model: model, scenePhase: scenePhase)
         }
         .onAppear {
-            model.onEvents = { [haptics, announcer, liveActivity, model] events in
+            model.onEvents = { [haptics, announcer, liveActivity, history, model] events in
                 haptics.handle(events, countdownDuration: model.engine.configuration.countdownDuration)
                 announcer.handle(events, model: model)
                 if let reveal = model.reveal, events.contains(where: { if case .selected = $0 { true } else { false } }) {
                     liveActivity.resultShown(reveal, enabled: UserDefaults.standard.bool(forKey: LiveActivityController.enabledKey))
+                    history.record(reveal)
                 }
                 if events.contains(.reset) { liveActivity.endAll() }
             }

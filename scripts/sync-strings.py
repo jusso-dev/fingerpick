@@ -23,6 +23,7 @@ PLURALS = {
     "Best with up to %lld players": "Best with up to %lld player",
     "Split into %lld teams": "Split into %lld team",
     "Needs at least %lld fingers, so someone is left out.": "Needs at least %lld finger, so someone is left out.",
+    "%@ · %lld players": "%@ · %lld player",
 }
 
 
