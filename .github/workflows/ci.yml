@@ -31,6 +31,20 @@ jobs:
       - name: swift test with coverage (90% minimum)
         run: scripts/coverage.sh 90
 
+  lint:
+    name: SwiftLint
+    runs-on: xcode-27
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s "$XCODE_PATH"
+      - name: Install SwiftLint
+        run: command -v swiftlint || brew install swiftlint
+      # Includes the no_uiscreen_main rule (#31).
+      - name: swiftlint
+        run: swiftlint lint --strict --reporter github-actions-logging
+
   app:
     name: App on ${{ matrix.device }}
     runs-on: xcode-27

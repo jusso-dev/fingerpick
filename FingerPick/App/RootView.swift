@@ -11,12 +11,17 @@ struct RootView: View {
         ZStack(alignment: .top) {
             Color(.systemBackground)
                 .ignoresSafeArea()
-            RingsView(model: model)
+            RingsView(model: model, diameter: model.layout.ringDiameter)
                 .ignoresSafeArea()
-            MultitouchSurface { model.handle($0) }
+            MultitouchSurface(onEvent: { model.handle($0) }, onLayout: { model.updateLayout($0) })
                 .ignoresSafeArea()
-            PromptView(model: model)
-                .padding(.top, 24)
+            GeometryReader { proxy in
+                // Prompt top in full-screen coordinates, pushed below any active occlusion (inner camera).
+                let top = proxy.safeAreaInsets.top + 24
+                PromptView(model: model)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, model.layout.labelTop(from: top, height: 60) - proxy.safeAreaInsets.top)
+            }
             if let reveal = model.reveal {
                 ResultView(reveal: reveal)
                     .id(reveal.startedAt)

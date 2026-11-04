@@ -1,3 +1,4 @@
+import FingerPickKit
 import SwiftUI
 import UIKit
 
@@ -14,12 +15,45 @@ enum TouchEvent {
 /// No software limit is applied: every touch UIKit delivers is forwarded.
 final class MultitouchView: UIView {
     var onEvent: ((TouchEvent) -> Void)?
+    /// Called with fresh geometry on every layout pass and trait change (iPhone Duo fold/unfold).
+    var onLayout: ((PlayLayout) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         isMultipleTouchEnabled = true
         isExclusiveTouch = false
         backgroundColor = .clear
+        registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitDisplayScale.self]) { (view: Self, _) in
+            view.reportLayout()
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        reportLayout()
+    }
+
+    /// Sized from this view, never the screen, so it follows the app between displays.
+    func reportLayout() {
+        onLayout?(PlayLayout(
+            size: bounds.size,
+            isRegularWidth: traitCollection.horizontalSizeClass == .regular,
+            displayScale: traitCollection.displayScale,
+            reserved: reservedAreas()
+        ))
+    }
+
+    /// The fold (division) and camera (occlusion) regions on iOS 27.1+. Inactive regions are
+    /// included so layout can plan for them without jumping.
+    private func reservedAreas() -> [ReservedArea] {
+        guard #available(iOS 27.1, *) else { return [] }
+        let divisions = reservedRegions(kind: .division, options: .includeInactive).map {
+            ReservedArea(kind: .division, frame: $0.frame, isActive: $0.isActive)
+        }
+        let occlusions = reservedRegions(kind: .occlusion, options: .includeInactive).map {
+            ReservedArea(kind: .occlusion, frame: $0.frame, isActive: $0.isActive)
+        }
+        return divisions + occlusions
     }
 
     @available(*, unavailable)
@@ -53,14 +87,17 @@ final class MultitouchView: UIView {
 /// Bridges `MultitouchView` into SwiftUI.
 struct MultitouchSurface: UIViewRepresentable {
     let onEvent: (TouchEvent) -> Void
+    let onLayout: (PlayLayout) -> Void
 
     func makeUIView(context: Context) -> MultitouchView {
         let view = MultitouchView()
         view.onEvent = onEvent
+        view.onLayout = onLayout
         return view
     }
 
     func updateUIView(_ view: MultitouchView, context: Context) {
         view.onEvent = onEvent
+        view.onLayout = onLayout
     }
 }

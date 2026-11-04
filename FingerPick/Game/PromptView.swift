@@ -14,25 +14,33 @@ struct PromptView: View {
         .allowsHitTesting(false)
     }
 
+    /// Larger text on large canvases such as the iPhone Duo inner display.
+    private var isLarge: Bool { model.layout.canvas == .large }
+
     @ViewBuilder
     private func content(now: TimeInterval) -> some View {
         let engine = model.engine
         switch engine.phase {
         case .waiting:
             if engine.players.isEmpty {
-                Text("Everyone put a finger down")
-                    .font(.title2.weight(.semibold))
+                VStack(spacing: 6) {
+                    Text("Everyone put a finger down")
+                        .font(isLarge ? .largeTitle.weight(.semibold) : .title2.weight(.semibold))
+                    Text("Best with up to \(model.layout.suggestedPlayers) players")
+                        .font(isLarge ? .title3 : .subheadline)
+                        .foregroundStyle(.secondary)
+                }
             } else {
                 Text("Waiting for at least \(engine.configuration.requiredPlayers) fingers")
-                    .font(.title3)
+                    .font(isLarge ? .title2 : .title3)
             }
         case .stabilising:
             if let cancelled = model.countdownCancelledAt, now - cancelled < 1.5 {
                 Text("Countdown cancelled. Hold still")
-                    .font(.title3.weight(.semibold))
+                    .font(isLarge ? .title2.weight(.semibold) : .title3.weight(.semibold))
             } else {
                 Text("Hold still")
-                    .font(.title3)
+                    .font(isLarge ? .title2 : .title3)
             }
         case let .countdown(start):
             let remaining = engine.configuration.countdownDuration - (now - start)

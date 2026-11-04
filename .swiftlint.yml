@@ -19,5 +19,6 @@ custom_rules:
   no_uiscreen_main:
     name: "No UIScreen.main"
     regex: 'UIScreen\.main'
+    excluded_match_kinds: [comment, doccomment, string]
     message: "Size from the view or window, never UIScreen.main (iPhone Duo moves the app between displays)."
     severity: error
