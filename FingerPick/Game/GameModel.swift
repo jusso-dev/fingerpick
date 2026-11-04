@@ -153,7 +153,7 @@ final class GameModel {
                     startedAt: now
                 )
                 // Next round, the first finger shouldn't land on last round's winning colour.
-                slots.deprioritise(colours: result.pickedPlayers.compactMap { slots.marker(for: $0)?.colourIndex })
+                slots.deprioritise(colours: result.leaders.compactMap { slots.marker(for: $0)?.colourIndex })
             case .reset:
                 reveal = nil
             default:
