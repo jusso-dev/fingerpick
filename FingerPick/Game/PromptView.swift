@@ -22,7 +22,12 @@ struct PromptView: View {
         let engine = model.engine
         switch engine.phase {
         case .waiting:
-            if engine.players.isEmpty {
+            if let interruption = model.interruption, engine.players.isEmpty {
+                Text(interruption.change == .folded
+                     ? "Phone folded, everyone put your fingers back down"
+                     : "Screen rotated, everyone put your fingers back down")
+                    .font(isLarge ? .title2.weight(.semibold) : .title3.weight(.semibold))
+            } else if engine.players.isEmpty {
                 VStack(spacing: 6) {
                     Text("Everyone put a finger down")
                         .font(isLarge ? .largeTitle.weight(.semibold) : .title2.weight(.semibold))

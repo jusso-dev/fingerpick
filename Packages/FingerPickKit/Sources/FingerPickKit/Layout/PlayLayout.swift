@@ -75,6 +75,49 @@ public struct PlayLayout: Equatable, Sendable {
         return max(top, blocking.map { $0 + 8 } ?? top)
     }
 
+    // MARK: Fold (division)
+
+    /// Active folds. A division is active only when iPhone Duo is partially open; flat, it's
+    /// inactive with zero width, so nothing moves.
+    public var activeDivisions: [CGRect] {
+        reserved.filter { $0.kind == .division && $0.isActive && !$0.frame.isEmpty }.map(\.frame)
+    }
+
+    /// Where the countdown, prompt and result go: the whole canvas, or the larger side of an active
+    /// fold. A tall division is a book posture (split left/right); a wide one is tabletop (top/bottom).
+    public var revealRect: CGRect {
+        guard let fold = activeDivisions.first else { return bounds }
+        let halves: (CGRect, CGRect)
+        if fold.height >= fold.width {
+            halves = (
+                CGRect(x: 0, y: 0, width: max(0, fold.minX), height: size.height),
+                CGRect(x: fold.maxX, y: 0, width: max(0, size.width - fold.maxX), height: size.height)
+            )
+        } else {
+            halves = (
+                CGRect(x: 0, y: 0, width: size.width, height: max(0, fold.minY)),
+                CGRect(x: 0, y: fold.maxY, width: size.width, height: max(0, size.height - fold.maxY))
+            )
+        }
+        let area = { (rect: CGRect) in rect.width * rect.height }
+        return area(halves.0) >= area(halves.1) ? halves.0 : halves.1
+    }
+
+    /// Where to draw a ring for a finger at `point`. A ring that would overlap an active fold is
+    /// nudged to the nearer side, clear of it. The touch itself still counts where it landed.
+    public func ringCentre(for point: CGPoint) -> CGPoint {
+        let radius = ringDiameter / 2
+        var centre = point
+        for fold in activeDivisions where fold.insetBy(dx: -radius, dy: -radius).contains(centre) {
+            if fold.height >= fold.width {
+                centre.x = centre.x < fold.midX ? fold.minX - radius : fold.maxX + radius
+            } else {
+                centre.y = centre.y < fold.midY ? fold.minY - radius : fold.maxY + radius
+            }
+        }
+        return centre
+    }
+
     public enum Corner: CaseIterable, Sendable {
         case topTrailing, topLeading, bottomTrailing, bottomLeading
     }

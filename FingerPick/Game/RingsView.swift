@@ -43,7 +43,9 @@ struct RingFrame {
     init(model: GameModel, now: TimeInterval) {
         self.now = now
         let picked = Set(model.reveal?.result.pickedPlayers ?? [])
-        for (id, position) in model.touches.positions {
+        // Rings that would sit on an active fold are drawn clear of it; the touch still counts.
+        let place = { (point: CGPoint) in model.layout.ringCentre(for: point) }
+        for (id, position) in model.touches.positions.mapValues(place) {
             guard let marker = model.reveal?.markers[id] ?? model.slots.marker(for: id) else { continue }
             rings.append(Ring(
                 marker: marker, position: position, age: now - (model.landedAt[id] ?? now), isPicked: picked.contains(id)
@@ -54,11 +56,13 @@ struct RingFrame {
             // Picked players stay drawn after they lift.
             for id in picked where model.touches.positions[id] == nil {
                 guard let marker = reveal.markers[id], let position = reveal.positions[id] else { continue }
-                rings.append(Ring(marker: marker, position: position, age: 1, isPicked: true))
+                rings.append(Ring(marker: marker, position: place(position), age: 1, isPicked: true))
             }
         } else {
             for lifted in model.liftedRings where now - lifted.liftedAt < LiftedRing.fadeDuration {
-                rings.append(Ring(marker: lifted.marker, position: lifted.position, age: 1, liftedAge: now - lifted.liftedAt))
+                rings.append(Ring(
+                    marker: lifted.marker, position: place(lifted.position), age: 1, liftedAge: now - lifted.liftedAt
+                ))
             }
         }
         rings.sort { $0.marker.slot < $1.marker.slot }
