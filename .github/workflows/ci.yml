@@ -48,7 +48,8 @@ jobs:
   app:
     name: App on ${{ matrix.device }}
     runs-on: xcode-27
-    timeout-minutes: 15
+    # Build plus unit and UI tests take about 15 minutes on the hosted runner.
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
