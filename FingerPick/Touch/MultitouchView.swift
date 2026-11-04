@@ -38,6 +38,12 @@ final class MultitouchView: UIView {
         isMultipleTouchEnabled = true
         isExclusiveTouch = false
         backgroundColor = .clear
+        // With VoiceOver on, touches pass straight through so everyone can still play.
+        isAccessibilityElement = true
+        accessibilityTraits = .allowsDirectInteraction
+        accessibilityLabel = String(localized: "Play area")
+        accessibilityHint = String(localized: "Everyone place one finger here and hold still.")
+        accessibilityIdentifier = "playArea"
         registerForTraitChanges([UITraitHorizontalSizeClass.self, UITraitDisplayScale.self]) { (view: Self, _) in
             view.reportLayout()
         }

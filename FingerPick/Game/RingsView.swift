@@ -7,13 +7,20 @@ struct RingsView: View {
     /// Ring diameter in points. Never below 88 pt so it shows around a fingertip.
     var diameter: CGFloat = 100
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.colorSchemeContrast) private var contrast
+
     var body: some View {
         TimelineView(.animation) { _ in
-            let frame = RingFrame(model: model, now: model.now())
+            let frame = RingFrame(
+                model: model, now: model.now(), reduceMotion: reduceMotion, increasedContrast: contrast == .increased
+            )
             Canvas { context, size in
                 frame.draw(in: &context, size: size, diameter: max(88, diameter))
             }
         }
+        // Badges sit around a fingertip, so they stop growing at the first accessibility size.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         .allowsHitTesting(false)
         .accessibilityHidden(true)
     }
@@ -61,10 +68,16 @@ struct RingFrame {
     var cancelAge: TimeInterval?
     /// Seconds since the result was revealed.
     var revealAge: TimeInterval?
+    /// Reduce Motion: fades and colour changes instead of pulses, scaling and shakes.
+    var reduceMotion = false
+    /// Increase Contrast: thicker ring outlines.
+    var increasedContrast = false
 
     @MainActor
-    init(model: GameModel, now: TimeInterval) {
+    init(model: GameModel, now: TimeInterval, reduceMotion: Bool = false, increasedContrast: Bool = false) {
         self.now = now
+        self.reduceMotion = reduceMotion
+        self.increasedContrast = increasedContrast
         let result = model.reveal?.result
         // Rings that would sit on an active fold are drawn clear of it; the touch still counts.
         let place = { (point: CGPoint) in model.layout.ringCentre(for: point) }
@@ -161,6 +174,13 @@ struct RingFrame {
         let farthest = corners.map { hypot($0.x - winner.position.x, $0.y - winner.position.y) }.max() ?? 0
         let radius = diameter / 2 + (farthest - diameter / 2) * eased
         let rect = CGRect(x: winner.position.x - radius, y: winner.position.y - radius, width: radius * 2, height: radius * 2)
+        if reduceMotion {
+            // Cross-fade the whole screen to the winner's colour instead of growing a circle.
+            var layer = context
+            layer.opacity = t
+            layer.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Palette.colour(winner.marker)))
+            return
+        }
         context.fill(Path(ellipseIn: rect), with: .color(Palette.colour(winner.marker)))
     }
 
@@ -169,13 +189,13 @@ struct RingFrame {
         let playerColour = Palette.colour(marker)
         let colour = style == .inverted ? Color(.systemBackground) : playerColour
         var scale = scaleIn(age: ring.age) * (revealAge == nil ? pulse : 1)
-        var opacity = 1.0
+        var opacity = reduceMotion ? min(1, ring.age / 0.15) * cancelFlash : 1
         if let lifted = ring.liftedAge {
             let t = min(1, lifted / LiftedRing.fadeDuration)
             opacity = 1 - t
-            scale *= 1 + 0.2 * t
+            if !reduceMotion { scale *= 1 + 0.2 * t }
         }
-        if case let .rank(rank) = style, let revealAge {
+        if case let .rank(rank) = style, let revealAge, !reduceMotion {
             // Small pop as each rank appears.
             scale *= 1 + 0.15 * max(0, 1 - (revealAge - Double(rank - 1) * Self.rankInterval) / 0.2)
         }
@@ -186,7 +206,7 @@ struct RingFrame {
         layer.opacity = opacity
         let circle = Path(ellipseIn: square(centre, radius))
         if style != .inverted { layer.fill(circle, with: .color(colour.opacity(0.18))) }
-        layer.stroke(circle, with: .color(colour), lineWidth: 10)
+        layer.stroke(circle, with: .color(colour), lineWidth: increasedContrast ? 14 : 10)
         if style == .highlighted {
             layer.stroke(Path(ellipseIn: square(centre, radius + 14)), with: .color(colour), lineWidth: 4)
         }
@@ -228,19 +248,25 @@ struct RingFrame {
             x: centre.x - badgeSize.width / 2, y: y - badgeSize.height / 2,
             width: badgeSize.width, height: badgeSize.height
         )
-        context.fill(Path(roundedRect: rect, cornerRadius: badgeSize.height / 2), with: .color(fill))
+        let badge = Path(roundedRect: rect, cornerRadius: badgeSize.height / 2)
+        context.fill(badge, with: .color(fill))
+        if increasedContrast {
+            context.stroke(badge, with: .color(.primary), lineWidth: 2)
+        }
         context.draw(label, at: CGPoint(x: rect.midX, y: rect.midY))
     }
 
     // MARK: Motion
 
     private func scaleIn(age: TimeInterval) -> CGFloat {
+        guard !reduceMotion else { return 1 }
         let t = min(1, age / 0.15)
         return 0.6 + 0.4 * (1 - pow(1 - t, 3))
     }
 
     /// Subtle idle pulse; during the countdown every ring pulses together once a second.
     private var pulse: CGFloat {
+        guard !reduceMotion else { return 1 }
         if let elapsed = countdownElapsed {
             let phase = elapsed - elapsed.rounded(.down)
             return 1 + 0.08 * pow(1 - phase, 2)
@@ -250,7 +276,13 @@ struct RingFrame {
 
     /// Brief horizontal shake when the countdown is cancelled.
     private var shake: CGFloat {
-        guard let age = cancelAge, age < 0.4 else { return 0 }
+        guard !reduceMotion, let age = cancelAge, age < 0.4 else { return 0 }
         return 8 * sin(age * 50) * (1 - age / 0.4)
+    }
+
+    /// Reduce Motion alternative to the shake: rings dim briefly when the countdown is cancelled.
+    private var cancelFlash: Double {
+        guard let age = cancelAge, age < 0.4 else { return 1 }
+        return 0.4 + 0.6 * age / 0.4
     }
 }
