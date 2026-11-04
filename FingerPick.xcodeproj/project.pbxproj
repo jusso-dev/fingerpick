@@ -12,10 +12,13 @@
 		1723A0E60D1FD938DDFBB27B /* UITestHooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5BE2A7A442C1C624D638F0 /* UITestHooks.swift */; };
 		1CC094945B4B8F95550A39AF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A7A9D9DA75CBDA5A306E4 /* RootView.swift */; };
 		20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2ADC4E61158061E19710A4C /* GameModelTests.swift */; };
+		25811B7A6B50218545F32A06 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 766D098D0E94E15C08E34E94 /* Localizable.xcstrings */; };
 		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
+		367EAB65541AB3DB1C6FF164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
 		39BB148A0DF041A613AB8A1E /* ResultTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */; };
 		3DB23DD3C580DBA440388556 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 766D098D0E94E15C08E34E94 /* Localizable.xcstrings */; };
 		3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */; };
+		42B3D7A2C8FEF97B9B741703 /* ResultActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED501646F1AAE5DB9E18C933 /* ResultActivityAttributes.swift */; };
 		4F9BB03307A778CE5420B58A /* GameSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */; };
 		63FBCA393803BBD914137E09 /* RingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC20C61590045F120E5B942 /* RingsView.swift */; };
 		64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270C825AFC31302848C0CFB1 /* GameModel.swift */; };
@@ -24,10 +27,14 @@
 		6F7610710A9FCD686B2169D9 /* AccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BB6A3C223C63DE83ED310D /* AccessibilityTests.swift */; };
 		829A5D220D24E8AA285671A9 /* FingerPickKit in Frameworks */ = {isa = PBXBuildFile; productRef = B24816A4773BC0E55DED29FF /* FingerPickKit */; };
 		8527EF39B567DF673AA44C52 /* FirstRunHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */; };
+		88C47ED56C19E7C6AABBFE40 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89A170E673484673B78C820 /* LiveActivityController.swift */; };
+		9029EAE78BCD7D512FD6247B /* FingerPickWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B1A921C5670973EFEA8F6C /* FingerPickWidgets.swift */; };
 		96EB1C28B8F343A8CF2A94D5 /* FoldHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */; };
+		9C2621B8AFC58F62FF3B68F3 /* ResultActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED501646F1AAE5DB9E18C933 /* ResultActivityAttributes.swift */; };
 		9ECADB5EF3C15242FDA0EA12 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9B2FF401EA9B7745EE273D /* Palette.swift */; };
 		9F44975B5093AE4E276D3CE8 /* FingerPickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */; };
 		A0B93A63AFC2C14E4884C595 /* PaletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A20F2E18AE85EF5DC8C636 /* PaletteTests.swift */; };
+		A8625E26CA8BB4922F606BAD /* FingerPickWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7E133FDB55576AFF3D01CBE7 /* FingerPickWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		AC917B095C4F7186830DEEB3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A6398057F4CA0DE0063ADF05 /* PrivacyInfo.xcprivacy */; };
 		BF047F2634EE9BC302C05ECE /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD49966EC08CEF081468440 /* ResultView.swift */; };
 		C2DBC9C596869085FFDD7CF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
@@ -38,6 +45,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8DB2E81CD879E1D7CCC5A56B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0E7C296501D56DD76DF7D2F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A352A4CF4D449B00DC8BDAB8;
+			remoteInfo = FingerPickWidgets;
+		};
 		ACF9845D848EE5A1430C6C40 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C0E7C296501D56DD76DF7D2F /* Project object */;
@@ -53,6 +67,20 @@
 			remoteInfo = FingerPick;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4BF0172398D91F63810F4F60 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A8625E26CA8BB4922F606BAD /* FingerPickWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08017B92C8D4FA710FE26F70 /* HapticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsTests.swift; sourceTree = "<group>"; };
@@ -71,7 +99,10 @@
 		728A7A9D9DA75CBDA5A306E4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		7330B8F9D840213AE446A011 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		766D098D0E94E15C08E34E94 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		7E133FDB55576AFF3D01CBE7 /* FingerPickWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FingerPickWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTextTests.swift; sourceTree = "<group>"; };
+		89B1A921C5670973EFEA8F6C /* FingerPickWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickWidgets.swift; sourceTree = "<group>"; };
+		914618FA81D0A86A2AC48976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A6398057F4CA0DE0063ADF05 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A72CF307AEDE8A289EE2EECF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldHandlingTests.swift; sourceTree = "<group>"; };
@@ -83,9 +114,11 @@
 		E0433760B2B7C473160DD079 /* FingerPickUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FingerPickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DAD844B6DDDC40C7E5C5D3 /* FingerPickKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = FingerPickKit; path = Packages/FingerPickKit; sourceTree = SOURCE_ROOT; };
 		E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstRunHint.swift; sourceTree = "<group>"; };
+		ED501646F1AAE5DB9E18C933 /* ResultActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultActivityAttributes.swift; sourceTree = "<group>"; };
 		F2ADC4E61158061E19710A4C /* GameModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelTests.swift; sourceTree = "<group>"; };
 		F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsTests.swift; sourceTree = "<group>"; };
 		F8712CFE785B05C8FC0BEBE9 /* FingerPickTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FingerPickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F89A170E673484673B78C820 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +142,15 @@
 			path = FingerPickUITests;
 			sourceTree = "<group>";
 		};
+		23D5752804E4E0FD9CA2B304 /* FingerPickWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				89B1A921C5670973EFEA8F6C /* FingerPickWidgets.swift */,
+				914618FA81D0A86A2AC48976 /* Info.plist */,
+			);
+			path = FingerPickWidgets;
+			sourceTree = "<group>";
+		};
 		345901FC8408711F82C47B77 /* Game */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +169,14 @@
 				E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		5D9D33FE1E6052A653EA90ED /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				ED501646F1AAE5DB9E18C933 /* ResultActivityAttributes.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		63F417A9F679829BB467A9E4 /* FingerPickTests */ = {
@@ -196,7 +246,9 @@
 			isa = PBXGroup;
 			children = (
 				A99D8078091F0E2A3955581A /* FingerPick */,
+				23D5752804E4E0FD9CA2B304 /* FingerPickWidgets */,
 				7E0B272448B9CB304B01B14B /* Packages */,
+				5D9D33FE1E6052A653EA90ED /* Shared */,
 				CC7EF5164813CF577ADA5C36 /* Tests */,
 				BE4A19149FD1A4567BE8A741 /* Products */,
 			);
@@ -208,6 +260,7 @@
 				3B8939C06F03D0A001700F8D /* FingerPick.app */,
 				F8712CFE785B05C8FC0BEBE9 /* FingerPickTests.xctest */,
 				E0433760B2B7C473160DD079 /* FingerPickUITests.xctest */,
+				7E133FDB55576AFF3D01CBE7 /* FingerPickWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -234,6 +287,7 @@
 			children = (
 				6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */,
 				D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */,
+				F89A170E673484673B78C820 /* LiveActivityController.swift */,
 				728A7A9D9DA75CBDA5A306E4 /* RootView.swift */,
 				0B5BE2A7A442C1C624D638F0 /* UITestHooks.swift */,
 			);
@@ -277,10 +331,12 @@
 				22247400EA55018E635E44B6 /* Sources */,
 				026E270BBF4001D3809FFDAA /* Resources */,
 				01500B3C82365195FE4E48A5 /* Frameworks */,
+				4BF0172398D91F63810F4F60 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				720AF0AC5F073B3225D4130B /* PBXTargetDependency */,
 			);
 			name = FingerPick;
 			packageProductDependencies = (
@@ -289,6 +345,24 @@
 			productName = FingerPick;
 			productReference = 3B8939C06F03D0A001700F8D /* FingerPick.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A352A4CF4D449B00DC8BDAB8 /* FingerPickWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1C34242E43086CD54F0C596 /* Build configuration list for PBXNativeTarget "FingerPickWidgets" */;
+			buildPhases = (
+				2EFD07BD9253543873FC928B /* Sources */,
+				42590B9364CD35DB94EC2010 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FingerPickWidgets;
+			packageProductDependencies = (
+			);
+			productName = FingerPickWidgets;
+			productReference = 7E133FDB55576AFF3D01CBE7 /* FingerPickWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		E5AF50B80B1FE23FB1659510 /* FingerPickUITests */ = {
 			isa = PBXNativeTarget;
@@ -325,6 +399,10 @@
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
+					A352A4CF4D449B00DC8BDAB8 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
 					E5AF50B80B1FE23FB1659510 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
@@ -352,6 +430,7 @@
 				7718C633DAE83D1640DA7DF3 /* FingerPick */,
 				50B68606082F84FFA8F8DF27 /* FingerPickTests */,
 				E5AF50B80B1FE23FB1659510 /* FingerPickUITests */,
+				A352A4CF4D449B00DC8BDAB8 /* FingerPickWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -364,6 +443,15 @@
 				C2DBC9C596869085FFDD7CF6 /* Assets.xcassets in Resources */,
 				3DB23DD3C580DBA440388556 /* Localizable.xcstrings in Resources */,
 				AC917B095C4F7186830DEEB3 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42590B9364CD35DB94EC2010 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				367EAB65541AB3DB1C6FF164 /* Assets.xcassets in Resources */,
+				25811B7A6B50218545F32A06 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,14 +469,25 @@
 				FF9D7EE4CD7ACB35832D2975 /* GameSettings.swift in Sources */,
 				E8F4E19938834803A6FD4231 /* HapticsService.swift in Sources */,
 				3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */,
+				88C47ED56C19E7C6AABBFE40 /* LiveActivityController.swift in Sources */,
 				2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */,
 				9ECADB5EF3C15242FDA0EA12 /* Palette.swift in Sources */,
 				0195BE5506E15EB613F7D703 /* PromptView.swift in Sources */,
+				9C2621B8AFC58F62FF3B68F3 /* ResultActivityAttributes.swift in Sources */,
 				BF047F2634EE9BC302C05ECE /* ResultView.swift in Sources */,
 				63FBCA393803BBD914137E09 /* RingsView.swift in Sources */,
 				1CC094945B4B8F95550A39AF /* RootView.swift in Sources */,
 				69164DDDFE9E18BEAE8E343B /* SettingsView.swift in Sources */,
 				1723A0E60D1FD938DDFBB27B /* UITestHooks.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2EFD07BD9253543873FC928B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9029EAE78BCD7D512FD6247B /* FingerPickWidgets.swift in Sources */,
+				42B3D7A2C8FEF97B9B741703 /* ResultActivityAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +521,11 @@
 			isa = PBXTargetDependency;
 			target = 7718C633DAE83D1640DA7DF3 /* FingerPick */;
 			targetProxy = CE2899A7C975AD9CE96E3935 /* PBXContainerItemProxy */;
+		};
+		720AF0AC5F073B3225D4130B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A352A4CF4D449B00DC8BDAB8 /* FingerPickWidgets */;
+			targetProxy = 8DB2E81CD879E1D7CCC5A56B /* PBXContainerItemProxy */;
 		};
 		8CB07B988544A84B8F01295D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -518,6 +622,27 @@
 			};
 			name = Debug;
 		};
+		480210071725A0D5137D3C75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FingerPickWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FingerPick;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.jusso.fingerpick.widgets;
+				PRODUCT_NAME = FingerPickWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		583BD083C0C6F143BF35DFD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -560,6 +685,27 @@
 				TEST_TARGET_NAME = FingerPick;
 			};
 			name = Debug;
+		};
+		800A3E16297596CFC118C155 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FingerPickWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FingerPick;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.jusso.fingerpick.widgets;
+				PRODUCT_NAME = FingerPickWidgets;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
 		};
 		87DFE82C1C036917D37F953F /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -701,6 +847,15 @@
 			buildConfigurations = (
 				364D29CD05A34271EF1C5631 /* Debug */,
 				A0612DCE791B260945762C61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D1C34242E43086CD54F0C596 /* Build configuration list for PBXNativeTarget "FingerPickWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				480210071725A0D5137D3C75 /* Debug */,
+				800A3E16297596CFC118C155 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

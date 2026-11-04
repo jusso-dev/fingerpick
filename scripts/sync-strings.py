@@ -28,8 +28,11 @@ PLURALS = {
 
 def extracted(intermediates: pathlib.Path) -> dict[str, str]:
     keys: dict[str, str] = {}
-    # App target only; one architecture is enough.
-    for path in sorted(intermediates.glob("FingerPick.build/*/FingerPick.build/Objects-normal/*/*.stringsdata")):
+    # App and widget targets (they share the catalogue), not tests.
+    paths = []
+    for target in ("FingerPick", "FingerPickWidgets"):
+        paths += intermediates.glob(f"FingerPick.build/*/{target}.build/Objects-normal/*/*.stringsdata")
+    for path in sorted(paths):
         data = json.loads(path.read_text())
         for entry in data.get("tables", {}).get("Localizable", []):
             keys.setdefault(entry["key"], entry.get("comment", ""))
