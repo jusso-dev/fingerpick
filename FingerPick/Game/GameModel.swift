@@ -12,12 +12,28 @@ struct MonotonicClock: GameClock {
     func now() -> TimeInterval { CACurrentMediaTime() }
 }
 
+/// A ring whose finger has lifted, drawn briefly while it fades out.
+struct LiftedRing: Equatable {
+    let marker: PlayerMarker
+    let position: CGPoint
+    let liftedAt: TimeInterval
+
+    static let fadeDuration: TimeInterval = 0.25
+}
+
 /// Main-actor model that turns raw touches into round state for the views.
 @MainActor
 @Observable
 final class GameModel {
     private(set) var touches = TouchRegistry<ObjectIdentifier>()
     private(set) var engine: RoundEngine
+    private(set) var slots = SlotAllocator()
+    /// When each current finger landed, for the scale-in animation.
+    private(set) var landedAt: [PlayerID: TimeInterval] = [:]
+    /// Rings of lifted fingers, kept briefly for the fade-out.
+    private(set) var liftedRings: [LiftedRing] = []
+    /// When the last countdown was cancelled, for the cancel feedback.
+    private(set) var countdownCancelledAt: TimeInterval?
 
     /// Receives every round event (haptics, VoiceOver announcements).
     @ObservationIgnored var onEvents: (([RoundEvent]) -> Void)?
@@ -39,26 +55,47 @@ final class GameModel {
         switch event {
         case let .began(key, location):
             if let id = touches.begin(key, at: location) {
-                apply(engine.fingerDown(id, at: now))
+                apply(engine.fingerDown(id, at: now), at: now)
             }
         case let .moved(key, location):
             touches.move(key, to: location)
         case let .ended(key):
+            let positions = touches.positions
             if let id = touches.end(key) {
-                apply(engine.fingerUp(id, at: now))
+                apply(engine.fingerUp(id, at: now), at: now, liftedFrom: positions)
             }
         case .cancelled:
+            let positions = touches.positions
             touches.removeAll()
-            apply(engine.cancelAllFingers(at: now))
+            apply(engine.cancelAllFingers(at: now), at: now, liftedFrom: positions)
         }
     }
 
     /// Advances the engine to the current time. Normally called by the scheduled timer.
     func tick() {
-        apply(engine.tick(at: clock.now()))
+        let now = clock.now()
+        apply(engine.tick(at: now), at: now)
     }
 
-    private func apply(_ events: [RoundEvent]) {
+    private func apply(_ events: [RoundEvent], at now: TimeInterval, liftedFrom positions: [PlayerID: CGPoint] = [:]) {
+        liftedRings.removeAll { now - $0.liftedAt > LiftedRing.fadeDuration }
+        for event in events {
+            switch event {
+            case let .playerJoined(id):
+                slots.assign(id)
+                landedAt[id] = now
+            case let .playerLeft(id):
+                if let marker = slots.marker(for: id), let position = positions[id] {
+                    liftedRings.append(LiftedRing(marker: marker, position: position, liftedAt: now))
+                }
+                slots.release(id)
+                landedAt[id] = nil
+            case .countdownCancelled:
+                countdownCancelledAt = now
+            default:
+                break
+            }
+        }
         if !events.isEmpty { onEvents?(events) }
         scheduleTick()
     }
