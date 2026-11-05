@@ -64,6 +64,9 @@ Strings live in `FingerPick/Resources/Localizable.xcstrings` (en-AU development 
 
 `FingerPick.xcodeproj` is generated from `project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen). After adding or removing files, run `xcodegen generate` and commit the result. Lint with `swiftlint`.
 
+## Releasing
+TestFlight builds come from the manual **TestFlight** workflow (`.github/workflows/testflight.yml`). It archives a Release build, sets the build number to the workflow run number and uploads with an App Store Connect API key. Add these repository secrets first: `APPLE_TEAM_ID`, `ASC_KEY_ID`, `ASC_ISSUER_ID` and `ASC_KEY_P8_BASE64`. You can also protect the `testflight` environment with required reviewers. Store listing and privacy answers: [docs/app-store/metadata.md](docs/app-store/metadata.md).
+
 ## Status
 In development. See the issues and milestones (MVP, v1, Later).
 
