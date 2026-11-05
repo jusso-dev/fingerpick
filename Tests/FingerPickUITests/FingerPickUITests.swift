@@ -107,10 +107,10 @@ final class FingerPickUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Teams: 3"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Minimum fingers: 3"].exists)
         // The sheet opens at the medium detent, so the haptics row may need scrolling into view.
-        let haptics = app.switches["settings.haptics"]
-        if !haptics.waitForExistence(timeout: 1) { app.swipeUp() }
-        XCTAssertTrue(haptics.waitForExistence(timeout: 3))
-        XCTAssertEqual(haptics.value as? String, "0")
+        let savedHaptics = app.switches["settings.haptics"]
+        if !savedHaptics.waitForExistence(timeout: 1) { app.swipeUp() }
+        XCTAssertTrue(savedHaptics.waitForExistence(timeout: 3))
+        XCTAssertEqual(savedHaptics.value as? String, "0")
     }
 
     func testTeamsAndOrderModesReveal() {
