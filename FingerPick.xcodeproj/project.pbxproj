@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0195BE5506E15EB613F7D703 /* PromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EE5E45CAA488D0DB4D4D9C /* PromptView.swift */; };
 		0F3894ABDAE4D24917AA257C /* HapticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08017B92C8D4FA710FE26F70 /* HapticsTests.swift */; };
+		1723A0E60D1FD938DDFBB27B /* UITestHooks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5BE2A7A442C1C624D638F0 /* UITestHooks.swift */; };
 		1CC094945B4B8F95550A39AF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A7A9D9DA75CBDA5A306E4 /* RootView.swift */; };
 		20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2ADC4E61158061E19710A4C /* GameModelTests.swift */; };
 		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		08017B92C8D4FA710FE26F70 /* HapticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsTests.swift; sourceTree = "<group>"; };
+		0B5BE2A7A442C1C624D638F0 /* UITestHooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestHooks.swift; sourceTree = "<group>"; };
 		11295CD10F529C3AAB9B5E79 /* Announcer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcer.swift; sourceTree = "<group>"; };
 		19BB6A3C223C63DE83ED310D /* AccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityTests.swift; sourceTree = "<group>"; };
 		1DC20C61590045F120E5B942 /* RingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingsView.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */,
 				D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */,
 				728A7A9D9DA75CBDA5A306E4 /* RootView.swift */,
+				0B5BE2A7A442C1C624D638F0 /* UITestHooks.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				63FBCA393803BBD914137E09 /* RingsView.swift in Sources */,
 				1CC094945B4B8F95550A39AF /* RootView.swift in Sources */,
 				69164DDDFE9E18BEAE8E343B /* SettingsView.swift in Sources */,
+				1723A0E60D1FD938DDFBB27B /* UITestHooks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

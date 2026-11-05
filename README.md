@@ -58,6 +58,8 @@ The pure game logic lives in the local Swift package `Packages/FingerPickKit` an
 swift test --package-path Packages/FingerPickKit
 ```
 
+Testing, including the manual iPhone Duo posture checklist: [docs/testing.md](docs/testing.md).
+
 Strings live in `FingerPick/Resources/Localizable.xcstrings` (en-AU development language, plurals for counts). Xcode keeps it in sync when you build in the IDE; after a command-line build run `scripts/sync-strings.py <DerivedData>/Build/Intermediates.noindex`. CI fails if it is out of date. Run the **FingerPick (Double-length)** scheme to check for clipped text with the double-length pseudo-language.
 
 `FingerPick.xcodeproj` is generated from `project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen). After adding or removing files, run `xcodegen generate` and commit the result. Lint with `swiftlint`.

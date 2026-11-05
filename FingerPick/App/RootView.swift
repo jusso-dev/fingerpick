@@ -2,7 +2,7 @@ import FingerPickKit
 import SwiftUI
 
 struct RootView: View {
-    @State private var model = GameModel()
+    @State private var model = GameModel.forLaunch()
     @State private var haptics = HapticsDirector(service: NoHaptics())
     @State private var idleTimer = IdleTimerController()
     @State private var announcer = Announcer()
@@ -29,6 +29,12 @@ struct RootView: View {
                 labels(safeArea: proxy.safeAreaInsets)
             }
             .ignoresSafeArea()
+            #if DEBUG
+            if UITestHooks.isEnabled {
+                TestTouchInjector(model: model)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+            }
+            #endif
             if !hasSeenHint && model.isIdle {
                 FirstRunHint { hasSeenHint = true }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -36,6 +42,7 @@ struct RootView: View {
             }
         }
         .animation(.default, value: hasSeenHint)
+        .preferredColorScheme(testColorScheme)
         .sheet(isPresented: $showsSettings) {
             SettingsView()
                 .presentationDetents([.medium, .large])
@@ -144,6 +151,28 @@ private struct IdleInputs: Equatable {
         isShowingResult = model.reveal != nil
         lastActivityAt = model.lastActivityAt
         self.scenePhase = scenePhase
+    }
+}
+
+extension RootView {
+    private var testColorScheme: ColorScheme? {
+        #if DEBUG
+        UITestHooks.colorScheme
+        #else
+        nil
+        #endif
+    }
+}
+
+extension GameModel {
+    /// The production model, or a seeded one when a UI test asks for deterministic picks.
+    static func forLaunch() -> GameModel {
+        #if DEBUG
+        if let seed = UITestHooks.seed {
+            return GameModel(engine: RoundEngine(picker: FairPicker(generator: SeededGenerator(seed: seed))))
+        }
+        #endif
+        return GameModel()
     }
 }
 
