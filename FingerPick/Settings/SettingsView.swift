@@ -3,6 +3,7 @@ import SwiftUI
 
 /// Native settings sheet (#15). Values persist with `@AppStorage`.
 struct SettingsView: View {
+    let history: HistoryStore
     @AppStorage(GameSettings.modeKey) private var mode = ModeChoice.single
     @AppStorage(GameSettings.winnerCountKey) private var winnerCount = GameSettings.defaultWinnerCount
     @AppStorage(GameSettings.teamCountKey) private var teamCount = GameSettings.defaultTeamCount
@@ -54,6 +55,15 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink {
+                        HistoryView(store: history)
+                    } label: {
+                        Text("History")
+                    }
+                    .accessibilityIdentifier("settings.history")
+                }
+
+                Section {
                     Toggle("Haptics", isOn: $hapticsEnabled)
                         .accessibilityIdentifier("settings.haptics")
                     Toggle("Show result in Dynamic Island", isOn: $liveActivityEnabled)
@@ -84,5 +94,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView()
+    SettingsView(history: HistoryStore(fileURL: nil))
 }
