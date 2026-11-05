@@ -14,9 +14,12 @@
 		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
 		39BB148A0DF041A613AB8A1E /* ResultTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */; };
 		3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E8865D9C621954BF2C6BBA /* IdleTimerController.swift */; };
+		4F9BB03307A778CE5420B58A /* GameSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */; };
 		63FBCA393803BBD914137E09 /* RingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC20C61590045F120E5B942 /* RingsView.swift */; };
 		64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270C825AFC31302848C0CFB1 /* GameModel.swift */; };
+		69164DDDFE9E18BEAE8E343B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330B8F9D840213AE446A011 /* SettingsView.swift */; };
 		829A5D220D24E8AA285671A9 /* FingerPickKit in Frameworks */ = {isa = PBXBuildFile; productRef = B24816A4773BC0E55DED29FF /* FingerPickKit */; };
+		8527EF39B567DF673AA44C52 /* FirstRunHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */; };
 		96EB1C28B8F343A8CF2A94D5 /* FoldHandlingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */; };
 		9ECADB5EF3C15242FDA0EA12 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9B2FF401EA9B7745EE273D /* Palette.swift */; };
 		9F44975B5093AE4E276D3CE8 /* FingerPickUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */; };
@@ -25,6 +28,7 @@
 		C2DBC9C596869085FFDD7CF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
 		E8F4E19938834803A6FD4231 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1186ABD262D48E8FAE9978B /* HapticsService.swift */; };
 		EEAE518EDBA65EE043C66B81 /* FingerPickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */; };
+		FF9D7EE4CD7ACB35832D2975 /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CADE28808792CBB54D18D4 /* GameSettings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,8 +56,10 @@
 		4CD49966EC08CEF081468440 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		5A9B2FF401EA9B7745EE273D /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		65EE5E45CAA488D0DB4D4D9C /* PromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptView.swift; sourceTree = "<group>"; };
+		69CADE28808792CBB54D18D4 /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
 		6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickApp.swift; sourceTree = "<group>"; };
 		728A7A9D9DA75CBDA5A306E4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		7330B8F9D840213AE446A011 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTextTests.swift; sourceTree = "<group>"; };
 		A72CF307AEDE8A289EE2EECF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldHandlingTests.swift; sourceTree = "<group>"; };
@@ -64,7 +70,9 @@
 		D7443E13A92FCDC4FE0D69DE /* FingerPickUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickUITests.swift; sourceTree = "<group>"; };
 		E0433760B2B7C473160DD079 /* FingerPickUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FingerPickUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DAD844B6DDDC40C7E5C5D3 /* FingerPickKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = FingerPickKit; path = Packages/FingerPickKit; sourceTree = SOURCE_ROOT; };
+		E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstRunHint.swift; sourceTree = "<group>"; };
 		F2ADC4E61158061E19710A4C /* GameModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelTests.swift; sourceTree = "<group>"; };
+		F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettingsTests.swift; sourceTree = "<group>"; };
 		F8712CFE785B05C8FC0BEBE9 /* FingerPickTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FingerPickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -100,11 +108,20 @@
 			path = Game;
 			sourceTree = "<group>";
 		};
+		400A6F8A37A06AF75FAC28C0 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		63F417A9F679829BB467A9E4 /* FingerPickTests */ = {
 			isa = PBXGroup;
 			children = (
 				C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */,
 				F2ADC4E61158061E19710A4C /* GameModelTests.swift */,
+				F49A80F342D2773412C8C4EA /* GameSettingsTests.swift */,
 				08017B92C8D4FA710FE26F70 /* HapticsTests.swift */,
 				C1A20F2E18AE85EF5DC8C636 /* PaletteTests.swift */,
 				83D27D15B6BADF99F49589C7 /* ResultTextTests.swift */,
@@ -134,7 +151,9 @@
 				D16FC44460091EA1F014C4DD /* App */,
 				345901FC8408711F82C47B77 /* Game */,
 				BEDFCD3AE7FC7CF1EA2C2CC4 /* Haptics */,
+				400A6F8A37A06AF75FAC28C0 /* Onboarding */,
 				9FCEC934526C7670086E47D3 /* Resources */,
+				E414EDA8E05EEDDA4285DE07 /* Settings */,
 				B02478DE300112898EF88EF0 /* Touch */,
 			);
 			path = FingerPick;
@@ -193,6 +212,15 @@
 				728A7A9D9DA75CBDA5A306E4 /* RootView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		E414EDA8E05EEDDA4285DE07 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				69CADE28808792CBB54D18D4 /* GameSettings.swift */,
+				7330B8F9D840213AE446A011 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -319,7 +347,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEAE518EDBA65EE043C66B81 /* FingerPickApp.swift in Sources */,
+				8527EF39B567DF673AA44C52 /* FirstRunHint.swift in Sources */,
 				64BDDA2E46A215BE715D961C /* GameModel.swift in Sources */,
+				FF9D7EE4CD7ACB35832D2975 /* GameSettings.swift in Sources */,
 				E8F4E19938834803A6FD4231 /* HapticsService.swift in Sources */,
 				3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */,
 				2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */,
@@ -328,6 +358,7 @@
 				BF047F2634EE9BC302C05ECE /* ResultView.swift in Sources */,
 				63FBCA393803BBD914137E09 /* RingsView.swift in Sources */,
 				1CC094945B4B8F95550A39AF /* RootView.swift in Sources */,
+				69164DDDFE9E18BEAE8E343B /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +368,7 @@
 			files = (
 				96EB1C28B8F343A8CF2A94D5 /* FoldHandlingTests.swift in Sources */,
 				20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */,
+				4F9BB03307A778CE5420B58A /* GameSettingsTests.swift in Sources */,
 				0F3894ABDAE4D24917AA257C /* HapticsTests.swift in Sources */,
 				A0B93A63AFC2C14E4884C595 /* PaletteTests.swift in Sources */,
 				39BB148A0DF041A613AB8A1E /* ResultTextTests.swift in Sources */,
