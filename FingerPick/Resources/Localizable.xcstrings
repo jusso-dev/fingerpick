@@ -39,6 +39,7 @@
     "%lld: %@" : {
       "comment" : "One turn in the spoken order. For example: 1: Orange circle 1"
     },
+    "After a round, the result stays in the Dynamic Island and on the Lock Screen until you come back." : {},
     "Best with up to %lld players" : {
       "localizations" : {
         "en-AU" : {
@@ -107,6 +108,7 @@
     "Orange" : {},
     "Phone folded, everyone put your fingers back down" : {},
     "Pick" : {},
+    "Picked" : {},
     "Pink" : {},
     "Play area" : {},
     "Purple" : {},
@@ -115,6 +117,7 @@
     "Screen rotated, everyone put your fingers back down" : {},
     "Settings" : {},
     "Several winners" : {},
+    "Show result in Dynamic Island" : {},
     "Sky blue" : {},
     "Split into %lld teams" : {
       "comment" : "Teams result headline",

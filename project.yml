@@ -31,8 +31,11 @@ targets:
       - path: FingerPick
         excludes:
           - Resources/Info.plist
+      - path: Shared
     dependencies:
       - package: FingerPickKit
+      - target: FingerPickWidgets
+        embed: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: dev.jusso.fingerpick
@@ -48,6 +51,32 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ENABLE_PREVIEWS: YES
+
+  # Live Activity for the last result (#29).
+  FingerPickWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FingerPickWidgets
+      - path: Shared
+      - path: FingerPick/Resources/Assets.xcassets
+      - path: FingerPick/Resources/Localizable.xcstrings
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.jusso.fingerpick.widgets
+        PRODUCT_NAME: FingerPickWidgets
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: FingerPick
+        SKIP_INSTALL: YES
+    info:
+      path: FingerPickWidgets/Info.plist
+      properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
 
   FingerPickTests:
     type: bundle.unit-test

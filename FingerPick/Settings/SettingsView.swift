@@ -9,6 +9,7 @@ struct SettingsView: View {
     @AppStorage(GameSettings.countdownKey) private var countdownSeconds = GameSettings.defaultCountdown
     @AppStorage(GameSettings.minimumFingersKey) private var minimumFingers = GameSettings.defaultMinimumFingers
     @AppStorage(Haptics.enabledKey) private var hapticsEnabled = true
+    @AppStorage(LiveActivityController.enabledKey) private var liveActivityEnabled = false
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -55,6 +56,10 @@ struct SettingsView: View {
                 Section {
                     Toggle("Haptics", isOn: $hapticsEnabled)
                         .accessibilityIdentifier("settings.haptics")
+                    Toggle("Show result in Dynamic Island", isOn: $liveActivityEnabled)
+                        .accessibilityIdentifier("settings.liveActivity")
+                } footer: {
+                    Text("After a round, the result stays in the Dynamic Island and on the Lock Screen until you come back.")
                 }
             }
             .navigationTitle("Settings")

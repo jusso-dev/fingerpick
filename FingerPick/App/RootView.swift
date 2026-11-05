@@ -6,6 +6,8 @@ struct RootView: View {
     @State private var haptics = HapticsDirector(service: NoHaptics())
     @State private var idleTimer = IdleTimerController()
     @State private var announcer = Announcer()
+    @State private var liveActivity = LiveActivityController()
+    @AppStorage(LiveActivityController.enabledKey) private var liveActivityEnabled = false
     @State private var showsSettings = false
     @AppStorage(Haptics.enabledKey) private var hapticsEnabled = true
     @AppStorage(FirstRunHint.seenKey) private var hasSeenHint = false
@@ -61,13 +63,24 @@ struct RootView: View {
         .onChange(of: hapticsEnabled, initial: true) {
             haptics.service = Haptics.make(enabled: hapticsEnabled)
         }
+        .onChange(of: scenePhase) {
+            // Back in the app: the result is on screen again, so drop the Live Activity.
+            if scenePhase == .active { liveActivity.endAll() }
+        }
+        .onChange(of: liveActivityEnabled) {
+            if !liveActivityEnabled { liveActivity.endAll() }
+        }
         .onChange(of: IdleInputs(model: model, scenePhase: scenePhase), initial: true) {
             idleTimer.update(model: model, scenePhase: scenePhase)
         }
         .onAppear {
-            model.onEvents = { [haptics, announcer, model] events in
+            model.onEvents = { [haptics, announcer, liveActivity, model] events in
                 haptics.handle(events, countdownDuration: model.engine.configuration.countdownDuration)
                 announcer.handle(events, model: model)
+                if let reveal = model.reveal, events.contains(where: { if case .selected = $0 { true } else { false } }) {
+                    liveActivity.resultShown(reveal, enabled: UserDefaults.standard.bool(forKey: LiveActivityController.enabledKey))
+                }
+                if events.contains(.reset) { liveActivity.endAll() }
             }
         }
     }
