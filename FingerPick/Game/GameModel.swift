@@ -26,12 +26,19 @@ struct LiftedRing: Equatable {
 struct Reveal: Equatable {
     let result: RoundResult
     let markers: [PlayerID: PlayerMarker]
-    let positions: [PlayerID: CGPoint]
+    /// Re-laid out proportionally if the display changes while the result shows.
+    var positions: [PlayerID: CGPoint]
     let startedAt: TimeInterval
 
     /// Winning circle growth and losers' fade. The whole reveal finishes in under a second.
     static let expandDuration: TimeInterval = 0.6
     static let fadeDuration: TimeInterval = 0.3
+}
+
+/// A round cancelled by a fold, unfold or rotation, shown as a message until the next finger lands.
+struct Interruption: Equatable {
+    let change: EnvironmentChange
+    let at: TimeInterval
 }
 
 /// Main-actor model that turns raw touches into round state for the views.
@@ -53,6 +60,8 @@ final class GameModel {
     private(set) var lastActivityAt: TimeInterval?
     /// Current play-area geometry, from the touch view's own size and reserved regions.
     private(set) var layout = PlayLayout(size: .zero)
+    /// Set when a fold or rotation cancelled a round in progress.
+    private(set) var interruption: Interruption?
 
     /// Receives every round event (haptics, VoiceOver announcements).
     @ObservationIgnored var onEvents: (([RoundEvent]) -> Void)?
@@ -75,6 +84,7 @@ final class GameModel {
         switch event {
         case let .began(key, location):
             if let id = touches.begin(key, at: location) {
+                interruption = nil
                 apply(engine.fingerDown(id, at: now), at: now)
             }
         case let .moved(key, location):
@@ -88,12 +98,30 @@ final class GameModel {
             let positions = touches.positions
             touches.removeAll()
             apply(engine.cancelAllFingers(at: now), at: now, liftedFrom: positions)
+        case let .environmentChanged(change):
+            // Assume in-flight touches did not survive; never pick from them.
+            touches.removeAll()
+            slots.releaseAll()
+            landedAt.removeAll()
+            liftedRings.removeAll()
+            let events = engine.environmentChanged(at: now)
+            if events.contains(.interrupted) {
+                interruption = Interruption(change: change, at: now)
+            }
+            apply(events, at: now)
         }
     }
 
     func updateLayout(_ newLayout: PlayLayout) {
         guard newLayout != layout else { return }
+        let old = layout.size
         layout = newLayout
+        // Keep a showing result and lay it out again on the new display.
+        if var reveal, old.width > 0, old.height > 0, old != newLayout.size {
+            let sx = newLayout.size.width / old.width, sy = newLayout.size.height / old.height
+            reveal.positions = reveal.positions.mapValues { CGPoint(x: $0.x * sx, y: $0.y * sy) }
+            self.reveal = reveal
+        }
     }
 
     /// Advances the engine to the current time. Normally called by the scheduled timer.
