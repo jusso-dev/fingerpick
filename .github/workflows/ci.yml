@@ -28,8 +28,8 @@ jobs:
         with:
           path: Packages/FingerPickKit/.build
           key: spm-${{ runner.os }}-${{ hashFiles('Packages/FingerPickKit/Package.swift', 'Packages/FingerPickKit/Package.resolved') }}
-      - name: swift test
-        run: swift test --package-path Packages/FingerPickKit
+      - name: swift test with coverage (90% minimum)
+        run: scripts/coverage.sh 90
 
   app:
     name: App on ${{ matrix.device }}
