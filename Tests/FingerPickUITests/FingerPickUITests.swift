@@ -90,7 +90,12 @@ final class FingerPickUITests: XCTestCase {
         teams.buttons.element(boundBy: 1).tap()
         app.steppers["settings.countdown"].buttons.element(boundBy: 1).tap()
         app.steppers["settings.minimumFingers"].buttons.element(boundBy: 1).tap()
-        app.switches["settings.haptics"].switches.firstMatch.tap()
+        let haptics = app.switches["settings.haptics"]
+        if !haptics.isHittable { app.swipeUp() }
+        XCTAssertEqual(haptics.value as? String, "1")
+        // Tap the control at the trailing edge; the toggle's centre is its label.
+        haptics.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap()
+        XCTAssertEqual(haptics.value as? String, "0")
         app.buttons["settings.done"].tap()
         app.terminate()
 
