@@ -51,6 +51,8 @@ final class GameModel {
     private(set) var reveal: Reveal?
     /// When a finger last landed or lifted, for the screen-awake policy.
     private(set) var lastActivityAt: TimeInterval?
+    /// Current play-area geometry, from the touch view's own size and reserved regions.
+    private(set) var layout = PlayLayout(size: .zero)
 
     /// Receives every round event (haptics, VoiceOver announcements).
     @ObservationIgnored var onEvents: (([RoundEvent]) -> Void)?
@@ -87,6 +89,11 @@ final class GameModel {
             touches.removeAll()
             apply(engine.cancelAllFingers(at: now), at: now, liftedFrom: positions)
         }
+    }
+
+    func updateLayout(_ newLayout: PlayLayout) {
+        guard newLayout != layout else { return }
+        layout = newLayout
     }
 
     /// Advances the engine to the current time. Normally called by the scheduled timer.
