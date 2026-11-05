@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  # All branches, so stacked PRs (based on other feature branches) are checked too.
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  XCODE_PATH: /Applications/Xcode_27.1.app
+
+jobs:
+  package:
+    name: FingerPickKit (macOS)
+    # GitHub's Xcode 27 image (macOS 27). macos-15 only ships Xcode 26, which lacks the iOS 27.1 SDK.
+    runs-on: xcode-27
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s "$XCODE_PATH" && xcodebuild -version
+      - uses: actions/cache@v4
+        with:
+          path: Packages/FingerPickKit/.build
+          key: spm-${{ runner.os }}-${{ hashFiles('Packages/FingerPickKit/Package.swift', 'Packages/FingerPickKit/Package.resolved') }}
+      - name: swift test
+        run: swift test --package-path Packages/FingerPickKit
+
+  app:
+    name: App on ${{ matrix.device }}
+    runs-on: xcode-27
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - device: iPhone 17
+            os: "27.0"
+          # iPhone Duo simulator boots closed (outer display); posture can't be changed from CI (#36).
+          - device: iPhone Duo
+            os: "27.1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s "$XCODE_PATH" && xcodebuild -version
+      - uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/org.swift.swiftpm
+          key: spm-cache-${{ runner.os }}-${{ hashFiles('**/Package.resolved', 'Packages/FingerPickKit/Package.swift') }}
+      - name: Build and test
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project FingerPick.xcodeproj \
+            -scheme FingerPick \
+            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=${{ matrix.os }}" \
+            -resultBundlePath "TestResults-${{ matrix.device }}.xcresult" \
+            CODE_SIGNING_ALLOWED=NO \
+            build test
+      - name: Upload xcresult
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcresult-${{ matrix.device }}
+          path: TestResults-${{ matrix.device }}.xcresult
+          retention-days: 7
