@@ -1,0 +1,21 @@
+included:
+  - FingerPick
+  - Packages/FingerPickKit/Sources
+  - Tests
+  - Packages/FingerPickKit/Tests
+excluded:
+  - Packages/FingerPickKit/.build
+disabled_rules:
+  - todo
+  - trailing_comma
+line_length:
+  warning: 140
+  error: 200
+identifier_name:
+  min_length: 1
+custom_rules:
+  no_uiscreen_main:
+    name: "No UIScreen.main"
+    regex: 'UIScreen\.main'
+    message: "Size from the view or window, never UIScreen.main (iPhone Duo moves the app between displays)."
+    severity: error

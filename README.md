@@ -36,8 +36,30 @@ FingerPick is built first for iPhone Duo, Apple's foldable iPhone, and works on 
 
 Specs from [Apple's iPhone Duo tech specs](https://www.apple.com/iphone-duo/specs/) and APIs from [Apple's iPhone Duo Prepare guide](https://developer.apple.com/iphone-duo/prepare/) and the [adaptive layouts tech talk](https://developer.apple.com/videos/play/tech-talks/111463/).
 
+## Building
+Requires Xcode 27.1 or later (iOS 27.1 SDK). The deployment target is iOS 18.
+
+```sh
+open FingerPick.xcodeproj            # then Run on an iPhone simulator
+```
+
+Command line:
+
+```sh
+xcodebuild -project FingerPick.xcodeproj -scheme FingerPick \
+  -destination 'platform=iOS Simulator,name=iPhone 17' build test
+```
+
+The pure game logic lives in the local Swift package `Packages/FingerPickKit` and also tests on macOS:
+
+```sh
+swift test --package-path Packages/FingerPickKit
+```
+
+`FingerPick.xcodeproj` is generated from `project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen). After adding or removing files, run `xcodegen generate` and commit the result. Lint with `swiftlint`.
+
 ## Status
-Planning. See the issues and milestones (MVP, v1, Later).
+In development. See the issues and milestones (MVP, v1, Later).
 
 ## Licence
 MIT
