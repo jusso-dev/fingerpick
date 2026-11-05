@@ -91,7 +91,7 @@ final class FingerPickUITests: XCTestCase {
         app.steppers["settings.countdown"].buttons.element(boundBy: 1).tap()
         app.steppers["settings.minimumFingers"].buttons.element(boundBy: 1).tap()
         let haptics = app.switches["settings.haptics"]
-        if !haptics.isHittable { app.swipeUp() }
+        if !haptics.waitForExistence(timeout: 1) || !haptics.isHittable { app.swipeUp() }
         XCTAssertEqual(haptics.value as? String, "1")
         // Tap the control at the trailing edge; the toggle's centre is its label.
         haptics.coordinate(withNormalizedOffset: CGVector(dx: 0.93, dy: 0.5)).tap()
@@ -106,7 +106,11 @@ final class FingerPickUITests: XCTestCase {
         app.buttons["settings.open"].tap()
         XCTAssertTrue(app.staticTexts["Teams: 3"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Minimum fingers: 3"].exists)
-        XCTAssertEqual(app.switches["settings.haptics"].value as? String, "0")
+        // The sheet opens at the medium detent, so the haptics row may need scrolling into view.
+        let haptics = app.switches["settings.haptics"]
+        if !haptics.waitForExistence(timeout: 1) { app.swipeUp() }
+        XCTAssertTrue(haptics.waitForExistence(timeout: 3))
+        XCTAssertEqual(haptics.value as? String, "0")
     }
 
     func testTeamsAndOrderModesReveal() {
