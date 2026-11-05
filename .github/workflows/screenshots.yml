@@ -1,0 +1,47 @@
+name: Screenshots
+
+# Generates App Store screenshots (#26) on demand. Uploads PNGs as an artefact; nothing is
+# sent to App Store Connect.
+on:
+  workflow_dispatch:
+
+jobs:
+  screenshots:
+    name: ${{ matrix.size }} (${{ matrix.device }})
+    runs-on: xcode-27
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - size: '6.9-inch'
+            device: iPhone 18 Pro Max
+            os: "27.0"
+          - size: '6.3-inch'
+            device: iPhone 18 Pro
+            os: "27.0"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_27.1.app
+      - name: Boot simulator
+        run: scripts/ci-boot-simulator.sh "${{ matrix.device }}" "${{ matrix.os }}"
+      - name: Status bar
+        run: xcrun simctl status_bar booted override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4
+      - name: Capture
+        env:
+          TEST_RUNNER_FINGERPICK_SCREENSHOTS: "1"
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project FingerPick.xcodeproj -scheme FingerPick \
+            -destination "platform=iOS Simulator,name=${{ matrix.device }},OS=${{ matrix.os }}" \
+            -only-testing:FingerPickUITests/AppStoreScreenshots \
+            -resultBundlePath Screenshots.xcresult \
+            CODE_SIGNING_ALLOWED=NO test
+      - name: Export PNGs
+        run: xcrun xcresulttool export attachments --path Screenshots.xcresult --output-path "screenshots-${{ matrix.size }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ matrix.size }}
+          path: screenshots-${{ matrix.size }}
