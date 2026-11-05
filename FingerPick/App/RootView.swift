@@ -5,6 +5,7 @@ struct RootView: View {
     @State private var model = GameModel()
     @State private var haptics = HapticsDirector(service: NoHaptics())
     @State private var idleTimer = IdleTimerController()
+    @State private var announcer = Announcer()
     @State private var showsSettings = false
     @AppStorage(Haptics.enabledKey) private var hapticsEnabled = true
     @AppStorage(FirstRunHint.seenKey) private var hasSeenHint = false
@@ -57,8 +58,9 @@ struct RootView: View {
             idleTimer.update(model: model, scenePhase: scenePhase)
         }
         .onAppear {
-            model.onEvents = { [haptics, model] events in
+            model.onEvents = { [haptics, announcer, model] events in
                 haptics.handle(events, countdownDuration: model.engine.configuration.countdownDuration)
+                announcer.handle(events, model: model)
             }
         }
     }

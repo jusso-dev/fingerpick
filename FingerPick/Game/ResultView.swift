@@ -6,6 +6,7 @@ struct ResultView: View {
     let reveal: Reveal
 
     @State private var isVisible = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Text(ResultText.headline(for: reveal))
@@ -14,13 +15,14 @@ struct ResultView: View {
             .foregroundStyle(Color(.systemBackground))
             .padding()
             .opacity(isVisible ? 1 : 0)
-            .scaleEffect(isVisible ? 1 : 0.9)
+            .scaleEffect(isVisible || reduceMotion ? 1 : 0.9)
             .accessibilityLabel(ResultText.spoken(for: reveal))
             .accessibilityAddTraits(.isHeader)
             .accessibilityIdentifier("result")
             .allowsHitTesting(false)
             .onAppear {
-                withAnimation(.spring(duration: 0.35).delay(Reveal.expandDuration * 0.5)) {
+                let animation: Animation = reduceMotion ? .easeIn(duration: 0.3) : .spring(duration: 0.35)
+                withAnimation(animation.delay(Reveal.expandDuration * 0.5)) {
                     isVisible = true
                 }
             }
