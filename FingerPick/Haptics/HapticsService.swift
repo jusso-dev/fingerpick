@@ -61,12 +61,26 @@ final class HapticsDirector {
                 let total = max(1, countdownDuration.rounded(.up))
                 let progress = 1 - (Double(remaining) - 1) / total
                 service.countdownTick(intensity: Float(0.4 + 0.6 * progress))
+            case .selected(.order(let ids)):
+                playRanks(count: ids.count)
             case .selected:
                 service.success()
             case .countdownCancelled, .interrupted:
                 service.cancelled()
             case .playerLeft, .countdownStarted, .reset:
                 break
+            }
+        }
+    }
+}
+
+extension HapticsDirector {
+    /// One tick per rank, in step with the order reveal.
+    private func playRanks(count: Int) {
+        Task { [service] in
+            for rank in 0..<count {
+                if rank > 0 { try? await Task.sleep(for: .seconds(RingFrame.rankInterval)) }
+                service.countdownTick(intensity: Float(1 - 0.5 * Double(rank) / Double(max(1, count - 1))))
             }
         }
     }

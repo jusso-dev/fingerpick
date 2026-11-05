@@ -21,15 +21,38 @@ struct RingsView: View {
 
 /// Everything needed to draw one frame, captured on the main actor.
 struct RingFrame {
+    /// A ring's part in the showing result.
+    enum Outcome: Equatable {
+        case none, winner, loser
+        /// Zero-based team.
+        case team(Int)
+        /// One-based turn.
+        case rank(Int)
+    }
+
     struct Ring {
         let marker: PlayerMarker
         let position: CGPoint
         let age: TimeInterval
         /// Seconds since the finger lifted, if it has.
         var liftedAge: TimeInterval?
-        /// Picked in the showing result.
-        var isPicked = false
+        var outcome: Outcome = .none
     }
+
+    enum Style: Equatable {
+        case plain
+        /// Background colour, over the winner's colour fill.
+        case inverted
+        /// One of several winners: extra halo.
+        case highlighted
+        /// Team colour and team badge.
+        case team(Int)
+        /// Turn number badge.
+        case rank(Int)
+    }
+
+    /// Delay between each rank appearing in an order reveal.
+    static let rankInterval: TimeInterval = 0.35
 
     var rings: [Ring] = []
     var now: TimeInterval
@@ -42,21 +65,24 @@ struct RingFrame {
     @MainActor
     init(model: GameModel, now: TimeInterval) {
         self.now = now
-        let picked = Set(model.reveal?.result.pickedPlayers ?? [])
+        let result = model.reveal?.result
         // Rings that would sit on an active fold are drawn clear of it; the touch still counts.
         let place = { (point: CGPoint) in model.layout.ringCentre(for: point) }
         for (id, position) in model.touches.positions.mapValues(place) {
             guard let marker = model.reveal?.markers[id] ?? model.slots.marker(for: id) else { continue }
             rings.append(Ring(
-                marker: marker, position: position, age: now - (model.landedAt[id] ?? now), isPicked: picked.contains(id)
+                marker: marker, position: position, age: now - (model.landedAt[id] ?? now),
+                outcome: result.map { Self.outcome(of: id, in: $0) } ?? .none
             ))
         }
         if let reveal = model.reveal {
             revealAge = now - reveal.startedAt
-            // Picked players stay drawn after they lift.
-            for id in picked where model.touches.positions[id] == nil {
+            // Everyone in the result stays drawn after they lift.
+            for id in reveal.result.pickedPlayers where model.touches.positions[id] == nil {
                 guard let marker = reveal.markers[id], let position = reveal.positions[id] else { continue }
-                rings.append(Ring(marker: marker, position: place(position), age: 1, isPicked: true))
+                rings.append(Ring(
+                    marker: marker, position: place(position), age: 1, outcome: Self.outcome(of: id, in: reveal.result)
+                ))
             }
         } else {
             for lifted in model.liftedRings where now - lifted.liftedAt < LiftedRing.fadeDuration {
@@ -73,39 +99,75 @@ struct RingFrame {
         cancelAge = model.countdownCancelledAt.map { now - $0 }
     }
 
+    static func outcome(of id: PlayerID, in result: RoundResult) -> Outcome {
+        switch result {
+        case let .winners(ids): ids.contains(id) ? .winner : .loser
+        case .teams: result.team(of: id).map(Outcome.team) ?? .loser
+        case .order: result.rank(of: id).map(Outcome.rank) ?? .loser
+        }
+    }
+
+    // MARK: Drawing
+
     func draw(in context: inout GraphicsContext, size: CGSize, diameter: CGFloat) {
         guard let revealAge else {
             for ring in rings { draw(ring, in: &context, diameter: diameter) }
             return
         }
-        // Losers fade out.
+        let fade = min(1, revealAge / Reveal.fadeDuration)
         var losers = context
-        losers.opacity = max(0, 1 - revealAge / Reveal.fadeDuration)
-        for ring in rings where !ring.isPicked {
+        losers.opacity = 1 - fade
+        for ring in rings where ring.outcome == .loser || ring.outcome == .none {
             draw(ring, in: &losers, diameter: diameter)
         }
-        let winners = rings.filter(\.isPicked)
-        // A single winner's colour grows from their finger to fill the screen.
+        let winners = rings.filter { $0.outcome == .winner }
         if winners.count == 1, let winner = winners.first {
-            let t = min(1, revealAge / Reveal.expandDuration)
-            let eased = 1 - pow(1 - t, 3)
-            let corners = [
-                CGPoint.zero, CGPoint(x: size.width, y: 0), CGPoint(x: 0, y: size.height), CGPoint(x: size.width, y: size.height),
-            ]
-            let farthest = corners.map { hypot($0.x - winner.position.x, $0.y - winner.position.y) }.max() ?? 0
-            let radius = diameter / 2 + (farthest - diameter / 2) * eased
-            let rect = CGRect(x: winner.position.x - radius, y: winner.position.y - radius, width: radius * 2, height: radius * 2)
-            context.fill(Path(ellipseIn: rect), with: .color(Palette.colour(winner.marker)))
-            draw(winner, in: &context, diameter: diameter, inverted: true)
+            drawFill(for: winner, in: &context, size: size, diameter: diameter, age: revealAge)
+            draw(winner, in: &context, diameter: diameter, style: .inverted)
         } else {
-            for ring in winners { draw(ring, in: &context, diameter: diameter) }
+            for ring in winners { draw(ring, in: &context, diameter: diameter, style: .highlighted) }
+        }
+        for ring in rings {
+            switch ring.outcome {
+            case let .team(team):
+                // Cross-fade from the player's colour to the team's.
+                var own = context
+                own.opacity = 1 - fade
+                draw(ring, in: &own, diameter: diameter)
+                var teamLayer = context
+                teamLayer.opacity = fade
+                draw(ring, in: &teamLayer, diameter: diameter, style: .team(team))
+            case let .rank(rank):
+                // Ranks appear one by one, first place first.
+                let shown = revealAge >= Double(rank - 1) * Self.rankInterval
+                var layer = context
+                layer.opacity = shown ? 1 : 0.3
+                draw(ring, in: &layer, diameter: diameter, style: shown ? .rank(rank) : .plain)
+            case .none, .winner, .loser:
+                break
+            }
         }
     }
 
-    /// Draws one ring. `inverted` draws it in the background colour, over the winner's colour fill.
-    private func draw(_ ring: Ring, in context: inout GraphicsContext, diameter: CGFloat, inverted: Bool = false) {
-        let playerColour = Palette.colour(ring.marker)
-        let colour = inverted ? Color(.systemBackground) : playerColour
+    /// A single winner's colour grows from their finger to fill the screen.
+    private func drawFill(
+        for winner: Ring, in context: inout GraphicsContext, size: CGSize, diameter: CGFloat, age: TimeInterval
+    ) {
+        let t = min(1, age / Reveal.expandDuration)
+        let eased = 1 - pow(1 - t, 3)
+        let corners = [
+            CGPoint.zero, CGPoint(x: size.width, y: 0), CGPoint(x: 0, y: size.height), CGPoint(x: size.width, y: size.height),
+        ]
+        let farthest = corners.map { hypot($0.x - winner.position.x, $0.y - winner.position.y) }.max() ?? 0
+        let radius = diameter / 2 + (farthest - diameter / 2) * eased
+        let rect = CGRect(x: winner.position.x - radius, y: winner.position.y - radius, width: radius * 2, height: radius * 2)
+        context.fill(Path(ellipseIn: rect), with: .color(Palette.colour(winner.marker)))
+    }
+
+    private func draw(_ ring: Ring, in context: inout GraphicsContext, diameter: CGFloat, style: Style = .plain) {
+        let marker = if case let .team(team) = style { PlayerMarker(slot: team) } else { ring.marker }
+        let playerColour = Palette.colour(marker)
+        let colour = style == .inverted ? Color(.systemBackground) : playerColour
         var scale = scaleIn(age: ring.age) * (revealAge == nil ? pulse : 1)
         var opacity = 1.0
         if let lifted = ring.liftedAge {
@@ -113,42 +175,49 @@ struct RingFrame {
             opacity = 1 - t
             scale *= 1 + 0.2 * t
         }
+        if case let .rank(rank) = style, let revealAge {
+            // Small pop as each rank appears.
+            scale *= 1 + 0.15 * max(0, 1 - (revealAge - Double(rank - 1) * Self.rankInterval) / 0.2)
+        }
         let radius = diameter / 2 * scale
         let centre = CGPoint(x: ring.position.x + shake, y: ring.position.y)
-        let circle = Path(ellipseIn: CGRect(x: centre.x - radius, y: centre.y - radius, width: radius * 2, height: radius * 2))
 
         var layer = context
         layer.opacity = opacity
-        if revealAge == nil { layer.fill(circle, with: .color(colour.opacity(0.18))) }
+        let circle = Path(ellipseIn: square(centre, radius))
+        if style != .inverted { layer.fill(circle, with: .color(colour.opacity(0.18))) }
         layer.stroke(circle, with: .color(colour), lineWidth: 10)
+        if style == .highlighted {
+            layer.stroke(Path(ellipseIn: square(centre, radius + 14)), with: .color(colour), lineWidth: 4)
+        }
 
         if let progress = countdownProgress, ring.liftedAge == nil {
-            let sweepRadius = radius + 12
             var arc = Path()
             arc.addArc(
-                center: centre, radius: sweepRadius,
+                center: centre, radius: radius + 12,
                 startAngle: .degrees(-90), endAngle: .degrees(-90 + 360 * progress), clockwise: false
             )
             layer.stroke(arc, with: .color(colour), style: StrokeStyle(lineWidth: 6, lineCap: .round))
         }
 
-        drawBadge(
-            for: ring.marker, fill: colour, text: inverted ? playerColour : Color(.systemBackground),
-            centre: centre, radius: radius, in: &layer
-        )
+        let symbol = Image(systemName: Palette.symbol(marker))
+        let text: Text = switch style {
+        case let .team(team): Text("\(symbol) Team \(team + 1)")
+        case let .rank(rank): Text("\(symbol) #\(rank)").font(.title2.bold().monospacedDigit())
+        default: Text("\(symbol) \(marker.number)")
+        }
+        let textColour = style == .inverted ? playerColour : Color(.systemBackground)
+        drawBadge(text.foregroundStyle(textColour), fill: colour, centre: centre, radius: radius, in: &layer)
     }
 
-    /// Shape and number above the ring (below it near the top edge), clear of the fingertip.
-    private func drawBadge(
-        for marker: PlayerMarker, fill: Color, text: Color, centre: CGPoint, radius: CGFloat,
-        in context: inout GraphicsContext
-    ) {
-        let label = context.resolve(
-            Text("\(Image(systemName: Palette.symbol(marker))) \(marker.number)")
-                .font(.headline.monospacedDigit())
-                .foregroundStyle(text)
-        )
-        let textSize = label.measure(in: CGSize(width: 200, height: 100))
+    private func square(_ centre: CGPoint, _ radius: CGFloat) -> CGRect {
+        CGRect(x: centre.x - radius, y: centre.y - radius, width: radius * 2, height: radius * 2)
+    }
+
+    /// Badge above the ring (below it near the top edge), clear of the fingertip.
+    private func drawBadge(_ text: Text, fill: Color, centre: CGPoint, radius: CGFloat, in context: inout GraphicsContext) {
+        let label = context.resolve(text.font(.headline.monospacedDigit()))
+        let textSize = label.measure(in: CGSize(width: 240, height: 100))
         let badgeSize = CGSize(width: textSize.width + 16, height: textSize.height + 8)
         let gap: CGFloat = 20
         var y = centre.y - radius - gap - badgeSize.height / 2

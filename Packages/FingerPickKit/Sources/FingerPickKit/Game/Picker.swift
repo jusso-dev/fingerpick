@@ -2,25 +2,63 @@
 public enum PickMode: Hashable, Sendable {
     /// One winner.
     case single
+    /// Several winners at once, for example two drivers.
+    case winners(Int)
+    /// Balanced teams.
+    case teams(Int)
+    /// A full turn order.
+    case order
 
-    /// Fewest fingers this mode can pick from.
+    public static let winnerRange = 1...9
+    public static let teamRange = 2...5
+
+    /// Fewest fingers this mode can pick from: winners need at least one loser, teams at least one
+    /// player each.
     public var minimumPlayers: Int {
         switch self {
-        case .single: 2
+        case .single, .order: 2
+        case let .winners(count): max(2, count + 1)
+        case let .teams(count): max(2, count)
         }
     }
 }
 
 /// The outcome of a round.
 public enum RoundResult: Hashable, Sendable {
-    /// Winners in reveal order.
+    /// Winners, revealed together.
     case winners([PlayerID])
+    /// Teams in team-number order; sizes differ by at most one.
+    case teams([[PlayerID]])
+    /// Turn order, first to last.
+    case order([PlayerID])
 
-    /// Every player who was picked for something (winner, team member, ranked).
+    /// Players the result is about: winners, or everyone for teams and order.
     public var pickedPlayers: [PlayerID] {
         switch self {
-        case let .winners(ids): ids
+        case let .winners(ids), let .order(ids): ids
+        case let .teams(teams): teams.flatMap { $0 }
         }
+    }
+
+    /// Players who came out on top: the winners, or whoever goes first. Empty for teams.
+    public var leaders: [PlayerID] {
+        switch self {
+        case let .winners(ids): ids
+        case let .order(ids): Array(ids.prefix(1))
+        case .teams: []
+        }
+    }
+
+    /// Zero-based team index for a player in a teams result.
+    public func team(of id: PlayerID) -> Int? {
+        guard case let .teams(teams) = self else { return nil }
+        return teams.firstIndex { $0.contains(id) }
+    }
+
+    /// One-based rank for a player in an order result.
+    public func rank(of id: PlayerID) -> Int? {
+        guard case let .order(ids) = self else { return nil }
+        return ids.firstIndex(of: id).map { $0 + 1 }
     }
 }
 
@@ -45,6 +83,17 @@ public struct FairPicker<Generator: RandomNumberGenerator>: Picker {
         switch mode {
         case .single:
             return .winners([pool.randomElement(using: &generator)!])
+        case let .winners(count):
+            return .winners(Array(pool.shuffled(using: &generator).prefix(count)))
+        case let .teams(count):
+            // Shuffle, then deal round-robin so sizes differ by at most one.
+            var teams = [[PlayerID]](repeating: [], count: count)
+            for (index, id) in pool.shuffled(using: &generator).enumerated() {
+                teams[index % count].append(id)
+            }
+            return .teams(teams)
+        case .order:
+            return .order(pool.shuffled(using: &generator))
         }
     }
 }
