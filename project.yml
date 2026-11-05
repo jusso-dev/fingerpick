@@ -16,6 +16,8 @@ settings:
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Automatic
     ENABLE_USER_SCRIPT_SANDBOXING: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
 
 packages:
   FingerPickKit:
@@ -89,3 +91,13 @@ schemes:
         - FingerPickTests
         - FingerPickUITests
         - package: FingerPickKit/FingerPickKitTests
+
+  # Manual pseudo-localisation check (#24): every string doubled in length.
+  FingerPick (Double-length):
+    build:
+      targets:
+        FingerPick: all
+    run:
+      config: Debug
+      commandLineArguments:
+        "-NSDoubleLocalizedStrings YES": true
