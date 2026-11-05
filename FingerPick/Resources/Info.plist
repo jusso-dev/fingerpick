@@ -5,5 +5,11 @@
 	<!-- Lets animations run at up to 120 Hz on ProMotion iPhones, including both iPhone Duo displays. -->
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<!-- Launch screen: plain background matching the first frame (white in light mode, black in dark). -->
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+	</dict>
 </dict>
 </plist>
