@@ -49,6 +49,8 @@ final class GameModel {
     private(set) var countdownCancelledAt: TimeInterval?
     /// The result being shown, if any.
     private(set) var reveal: Reveal?
+    /// When a finger last landed or lifted, for the screen-awake policy.
+    private(set) var lastActivityAt: TimeInterval?
 
     /// Receives every round event (haptics, VoiceOver announcements).
     @ObservationIgnored var onEvents: (([RoundEvent]) -> Void)?
@@ -67,6 +69,7 @@ final class GameModel {
 
     func handle(_ event: TouchEvent) {
         let now = clock.now()
+        if case .moved = event {} else { lastActivityAt = now }
         switch event {
         case let .began(key, location):
             if let id = touches.begin(key, at: location) {
