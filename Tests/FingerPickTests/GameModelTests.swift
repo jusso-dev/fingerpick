@@ -25,10 +25,55 @@ struct GameModelTests {
         #expect(model.engine.players.count == 10)
         #expect(model.isRoundActive)
 
-        model.handle(.cancelled)
+        model.handle(.cancelled(keys: fingers.map(ObjectIdentifier.init)))
         #expect(model.touches.isEmpty)
         #expect(model.engine.players.isEmpty)
         #expect(!model.isRoundActive)
+    }
+
+    @Test func cancellingSomeTouchesKeepsTheOthers() {
+        let model = makeModel()
+        let fingers = (0..<4).map { _ in NSObject() }
+        for finger in fingers {
+            model.handle(.began(key: ObjectIdentifier(finger), location: .zero))
+        }
+        model.handle(.cancelled(keys: [ObjectIdentifier(fingers[0])]))
+        #expect(model.touches.count == 3)
+        #expect(model.engine.players.count == 3)
+        // The fingers still down keep working.
+        model.handle(.ended(key: ObjectIdentifier(fingers[1])))
+        #expect(model.touches.count == 2)
+    }
+
+    @Test func pickedPlayerKeepsTheirMarkerWhileTheResultShows() throws {
+        let clock = ManualClock()
+        let model = makeModel(clock: clock)
+        let fingers = (0..<3).map { _ in NSObject() }
+        for finger in fingers { model.handle(.began(key: ObjectIdentifier(finger), location: .zero)) }
+        clock.time = 1; model.tick()
+        clock.time = 4; model.tick()
+        let winner = try #require(model.engine.result?.pickedPlayers.first)
+        let winnerSlot = try #require(model.reveal?.markers[winner]?.slot)
+        // Player IDs count up in touch-down order.
+        model.handle(.ended(key: ObjectIdentifier(fingers[winner.rawValue])))
+        let late = NSObject()
+        model.handle(.began(key: ObjectIdentifier(late), location: .zero))
+        let lateSlot = try #require(model.slots.marker(for: PlayerID(3))?.slot)
+        #expect(lateSlot != winnerSlot)
+    }
+
+    @Test func resultFadesOutAfterTheReset() {
+        let clock = ManualClock()
+        let model = makeModel(clock: clock)
+        let fingers = (0..<2).map { _ in NSObject() }
+        for finger in fingers { model.handle(.began(key: ObjectIdentifier(finger), location: .zero)) }
+        clock.time = 1; model.tick()
+        clock.time = 4; model.tick()
+        for finger in fingers { model.handle(.ended(key: ObjectIdentifier(finger))) }
+        clock.time = 4.5; model.tick()
+        #expect(model.reveal == nil)
+        #expect(model.endedReveal?.endedAt == 4.5)
+        #expect(!model.isStill)
     }
 
     @Test func liftingOneFingerKeepsTheOthers() {

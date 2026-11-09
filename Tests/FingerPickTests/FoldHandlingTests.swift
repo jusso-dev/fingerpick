@@ -53,16 +53,16 @@ struct FoldHandlingTests {
 
     @Test func resultSurvivesAFoldAndIsLaidOutAgain() throws {
         let clock = ManualClock()
-        let (model, _) = modelInCountdown(clock: clock)
+        let (model, fingers) = modelInCountdown(clock: clock)
         clock.time = 4
         model.tick()
         let before = try #require(model.reveal)
 
         clock.time = 5
-        model.handle(.cancelled)
+        model.handle(.cancelled(keys: fingers.map(ObjectIdentifier.init)))
         model.updateLayout(inner)
         model.handle(.environmentChanged(.folded))
-        clock.time = 60
+        clock.time = 30
         model.tick()
 
         let after = try #require(model.reveal)

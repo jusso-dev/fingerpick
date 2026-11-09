@@ -7,7 +7,7 @@ import UIKit
 enum EnvironmentChange: Equatable {
     /// Folded, unfolded, moved display or hinge posture changed (iPhone Duo).
     case folded
-    /// Rotated: the size swapped width and height.
+    /// Rotated: the size swapped width and height, or the screen turned half a circle.
     case rotated
 }
 
@@ -16,8 +16,9 @@ enum TouchEvent {
     case began(key: ObjectIdentifier, location: CGPoint)
     case moved(key: ObjectIdentifier, location: CGPoint)
     case ended(key: ObjectIdentifier)
-    /// The system cancelled touches (call, Control Centre, fold). Clear every finger.
-    case cancelled
+    /// The system cancelled these touches: all of them (call, Control Centre, fold) or just some
+    /// (palm rejection, a system gesture).
+    case cancelled(keys: [ObjectIdentifier])
     /// The view's size or the hinge changed. Any round in progress must start again.
     case environmentChanged(EnvironmentChange)
 }
@@ -30,6 +31,8 @@ final class MultitouchView: UIView {
     var onLayout: ((PlayLayout) -> Void)?
 
     private var lastSize: CGSize = .zero
+    private var lastOrientation: UIInterfaceOrientation?
+    private var geometryObservation: NSKeyValueObservation?
     private var activeTouches: Set<ObjectIdentifier> = []
     private let survival = TouchSurvivalLog()
 
@@ -63,6 +66,27 @@ final class MultitouchView: UIView {
         guard lastSize != .zero, size != lastSize else { return }
         let rotated = size.width == lastSize.height && size.height == lastSize.width
         environmentChanged(rotated ? .rotated : .folded)
+    }
+
+    /// A half turn (landscape left to right) keeps the size, so `layoutSubviews` misses it and
+    /// every touch would jump to the mirrored spot. Watch the scene's orientation for it.
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        let scene = window?.windowScene
+        lastOrientation = scene?.effectiveGeometry.interfaceOrientation
+        geometryObservation = scene?.observe(\.effectiveGeometry) { [weak self] scene, _ in
+            MainActor.assumeIsolated {
+                self?.orientationChanged(to: scene.effectiveGeometry.interfaceOrientation)
+            }
+        }
+    }
+
+    private func orientationChanged(to orientation: UIInterfaceOrientation) {
+        defer { lastOrientation = orientation }
+        guard let lastOrientation, orientation != lastOrientation, orientation != .unknown else { return }
+        // A quarter turn changes the size and is handled in layoutSubviews.
+        guard orientation.isLandscape == lastOrientation.isLandscape else { return }
+        environmentChanged(.rotated)
     }
 
     /// Sized from this view, never the screen, so it follows the app between displays.
@@ -134,7 +158,7 @@ final class MultitouchView: UIView {
             activeTouches.remove(ObjectIdentifier(touch))
             survival.touchSeen(ObjectIdentifier(touch), outcome: "cancelled")
         }
-        onEvent?(.cancelled)
+        onEvent?(.cancelled(keys: touches.map(ObjectIdentifier.init)))
     }
 }
 

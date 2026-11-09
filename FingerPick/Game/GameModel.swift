@@ -33,6 +33,19 @@ struct Reveal: Equatable {
     /// Winning circle growth and losers' fade. The whole reveal finishes in under a second.
     static let expandDuration: TimeInterval = 0.6
     static let fadeDuration: TimeInterval = 0.3
+
+    /// One winner: their colour fills the screen and the headline sits on it.
+    var fillsScreen: Bool {
+        if case let .winners(ids) = result { ids.count == 1 } else { false }
+    }
+}
+
+/// The last result, faded out after the reset instead of vanishing in one frame.
+struct EndedReveal: Equatable {
+    let reveal: Reveal
+    let endedAt: TimeInterval
+
+    static let fadeDuration: TimeInterval = 0.35
 }
 
 /// A round cancelled by a fold, unfold or rotation, shown as a message until the next finger lands.
@@ -56,6 +69,8 @@ final class GameModel {
     private(set) var countdownCancelledAt: TimeInterval?
     /// The result being shown, if any.
     private(set) var reveal: Reveal?
+    /// The result that just ended, while it fades out.
+    private(set) var endedReveal: EndedReveal?
     /// When a finger last landed or lifted, for the screen-awake policy.
     private(set) var lastActivityAt: TimeInterval?
     /// Current play-area geometry, from the touch view's own size and reserved regions.
@@ -67,6 +82,7 @@ final class GameModel {
     @ObservationIgnored var onEvents: (([RoundEvent]) -> Void)?
     @ObservationIgnored private let clock: any GameClock
     @ObservationIgnored private var tickTask: Task<Void, Never>?
+    @ObservationIgnored private var fadeTask: Task<Void, Never>?
 
     init(engine: RoundEngine = RoundEngine(), clock: any GameClock = MonotonicClock()) {
         self.engine = engine
@@ -75,6 +91,9 @@ final class GameModel {
 
     /// True while any finger is down. Drives system gesture deferral and the home indicator.
     var isRoundActive: Bool { !touches.isEmpty }
+
+    /// Nothing on screen is moving, so the rings layer can stop redrawing.
+    var isStill: Bool { touches.isEmpty && reveal == nil && endedReveal == nil && liftedRings.isEmpty }
 
     func now() -> TimeInterval { clock.now() }
 
@@ -94,21 +113,32 @@ final class GameModel {
             if let id = touches.end(key) {
                 apply(engine.fingerUp(id, at: now), at: now, liftedFrom: positions)
             }
-        case .cancelled:
-            let positions = touches.positions
-            touches.removeAll()
-            apply(engine.cancelAllFingers(at: now), at: now, liftedFrom: positions)
+        case let .cancelled(keys):
+            cancel(keys, at: now)
         case let .environmentChanged(change):
             // Assume in-flight touches did not survive; never pick from them.
             touches.removeAll()
-            slots.releaseAll()
             landedAt.removeAll()
+            releaseUnusedSlots()
             liftedRings.removeAll()
             let events = engine.environmentChanged(at: now)
             if events.contains(.interrupted) {
                 interruption = Interruption(change: change, at: now)
             }
             apply(events, at: now)
+        }
+    }
+
+    private func cancel(_ keys: [ObjectIdentifier], at now: TimeInterval) {
+        let positions = touches.positions
+        let ids = keys.compactMap { touches.end($0) }
+        if touches.isEmpty {
+            // The system took every touch (call, Control Centre, backgrounding, fold).
+            apply(engine.cancelAllFingers(at: now), at: now, liftedFrom: positions)
+        } else {
+            // Only some touches were cancelled (palm rejection, a system gesture): those fingers
+            // lifted, everyone else is still playing.
+            for id in ids { apply(engine.fingerUp(id, at: now), at: now, liftedFrom: positions) }
         }
     }
 
@@ -141,17 +171,14 @@ final class GameModel {
 
     private func apply(_ events: [RoundEvent], at now: TimeInterval, liftedFrom positions: [PlayerID: CGPoint] = [:]) {
         liftedRings.removeAll { now - $0.liftedAt > LiftedRing.fadeDuration }
+        if let ended = endedReveal, now - ended.endedAt > EndedReveal.fadeDuration { endedReveal = nil }
         for event in events {
             switch event {
             case let .playerJoined(id):
                 slots.assign(id)
                 landedAt[id] = now
             case let .playerLeft(id):
-                if let marker = slots.marker(for: id), let position = positions[id] {
-                    liftedRings.append(LiftedRing(marker: marker, position: position, liftedAt: now))
-                }
-                slots.release(id)
-                landedAt[id] = nil
+                playerLeft(id, at: now, from: positions[id])
             case .countdownCancelled:
                 countdownCancelledAt = now
             case let .selected(result):
@@ -164,13 +191,50 @@ final class GameModel {
                 // Next round, the first finger shouldn't land on last round's winning colour.
                 slots.deprioritise(colours: result.leaders.compactMap { slots.marker(for: $0)?.colourIndex })
             case .reset:
+                endedReveal = reveal.map { EndedReveal(reveal: $0, endedAt: now) }
                 reveal = nil
+                releaseUnusedSlots()
             default:
                 break
             }
         }
         if !events.isEmpty { onEvents?(events) }
         scheduleTick()
+        scheduleFadeCleanup()
+    }
+
+    private func playerLeft(_ id: PlayerID, at now: TimeInterval, from position: CGPoint?) {
+        if let marker = slots.marker(for: id), let position {
+            liftedRings.append(LiftedRing(marker: marker, position: position, liftedAt: now))
+        }
+        // A picked player keeps their marker while the result shows, so a new finger can't take
+        // the same colour, shape and number.
+        if reveal?.result.pickedPlayers.contains(id) != true { slots.release(id) }
+        landedAt[id] = nil
+    }
+
+    /// Frees the slots of players with no finger down, except picked players in a showing result.
+    private func releaseUnusedSlots() {
+        let held = Set(reveal?.result.pickedPlayers ?? [])
+        for id in slots.slots.keys where touches.positions[id] == nil && !held.contains(id) {
+            slots.release(id)
+        }
+    }
+
+    /// Drops finished fades once they end, so `isStill` turns true and redrawing stops.
+    private func scheduleFadeCleanup() {
+        fadeTask?.cancel()
+        let ends = liftedRings.map { $0.liftedAt + LiftedRing.fadeDuration }
+            + [endedReveal.map { $0.endedAt + EndedReveal.fadeDuration }].compactMap { $0 }
+        guard let last = ends.max() else { return }
+        let delay = max(0, last - clock.now())
+        fadeTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(delay))
+            guard !Task.isCancelled, let self else { return }
+            let now = clock.now()
+            liftedRings.removeAll { now - $0.liftedAt >= LiftedRing.fadeDuration }
+            if let ended = endedReveal, now - ended.endedAt >= EndedReveal.fadeDuration { endedReveal = nil }
+        }
     }
 
     private func scheduleTick() {

@@ -10,6 +10,7 @@ struct RootView: View {
     @State private var history = HistoryStore()
     @AppStorage(LiveActivityController.enabledKey) private var liveActivityEnabled = false
     @State private var showsSettings = false
+    @State private var showsSplash = SplashView.showsOnLaunch
     @AppStorage(Haptics.enabledKey) private var hapticsEnabled = true
     @AppStorage(FirstRunHint.seenKey) private var hasSeenHint = false
     @AppStorage(GameSettings.modeKey) private var mode = ModeChoice.single
@@ -43,8 +44,13 @@ struct RootView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity)
             }
+            if showsSplash {
+                SplashView { showsSplash = false }
+                    .transition(.opacity)
+            }
         }
         .animation(.default, value: hasSeenHint)
+        .animation(.easeOut(duration: 0.15), value: showsSplash)
         .preferredColorScheme(testColorScheme)
         .sheet(isPresented: $showsSettings) {
             SettingsView(history: history)
@@ -58,8 +64,11 @@ struct RootView: View {
             model.updateConfiguration(configuration)
         }
         .onChange(of: model.isRoundActive) {
-            // The first finger also dismisses the hint.
-            if model.isRoundActive { hasSeenHint = true }
+            // The first finger also dismisses the hint and the splash.
+            if model.isRoundActive {
+                hasSeenHint = true
+                showsSplash = false
+            }
         }
         .onChange(of: hapticsEnabled, initial: true) {
             haptics.service = Haptics.make(enabled: hapticsEnabled)
@@ -82,7 +91,11 @@ struct RootView: View {
                     liveActivity.resultShown(reveal, enabled: UserDefaults.standard.bool(forKey: LiveActivityController.enabledKey))
                     history.record(reveal)
                 }
-                if events.contains(.reset) { liveActivity.endAll() }
+                // A new round has started. Not on reset: everyone lifts and the reset follows
+                // half a second later, before anyone could leave the app to see the activity.
+                if model.reveal == nil, events.contains(where: { if case .playerJoined = $0 { true } else { false } }) {
+                    liveActivity.endAll()
+                }
             }
         }
     }
@@ -125,8 +138,10 @@ extension RootView {
                     .environment(\.layoutDirection, layoutDirection)
                     .frame(width: region.width, height: region.height)
                     .offset(x: region.minX, y: region.minY)
+                    .transition(.opacity)
             }
         }
+        .animation(.easeOut(duration: EndedReveal.fadeDuration), value: model.reveal?.startedAt)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .environment(\.layoutDirection, .leftToRight)
     }

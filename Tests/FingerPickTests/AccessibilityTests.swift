@@ -16,6 +16,8 @@ struct AnnouncementTests {
         #expect(Announcements.text(for: [.playerLeft(PlayerID(1)), .countdownCancelled], fingerCount: 1, reveal: nil)
             == "Countdown cancelled")
         #expect(Announcements.text(for: [.interrupted], fingerCount: 0, reveal: nil)?.hasPrefix("Phone folded") == true)
+        #expect(Announcements.text(for: [.interrupted], fingerCount: 0, reveal: nil, interruption: .rotated)?
+            .hasPrefix("Screen rotated") == true)
         #expect(Announcements.text(for: [.countdownTick(secondsRemaining: 2)], fingerCount: 2, reveal: nil) == nil)
     }
 }

@@ -16,6 +16,14 @@ struct SlotAllocatorTests {
         #expect(allocator.assign(PlayerID(7)).slot == 1)
     }
 
+    @Test func freeSlotSharingAColourWithAFingerDownIsSkipped() {
+        var allocator = SlotAllocator()
+        for id in 0..<11 { allocator.assign(PlayerID(id)) }
+        for id in 0..<10 { allocator.release(PlayerID(id)) }
+        // Slot 10 (colour 0) is still down, so the new finger doesn't get slot 0's colour.
+        #expect(allocator.assign(PlayerID(20)).colourIndex != 0)
+    }
+
     @Test func assigningTwiceKeepsTheSameSlot() {
         var allocator = SlotAllocator()
         let first = allocator.assign(PlayerID(0))

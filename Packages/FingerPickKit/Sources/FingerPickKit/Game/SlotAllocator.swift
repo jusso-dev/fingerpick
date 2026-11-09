@@ -36,7 +36,9 @@ public struct SlotAllocator: Sendable {
     public mutating func assign(_ id: PlayerID) -> PlayerMarker {
         if let slot = slots[id] { return PlayerMarker(slot: slot) }
         let used = Set(slots.values)
-        let slot = preference.first { !used.contains($0) }
+        // A free low slot can share a colour with a high slot still down (slot 0 and slot 10).
+        let usedColours = Set(used.map { $0 % PlayerMarker.paletteSize })
+        let slot = preference.first { !used.contains($0) && !usedColours.contains($0) }
             ?? (PlayerMarker.paletteSize...).first { !used.contains($0) }!
         slots[id] = slot
         return PlayerMarker(slot: slot)

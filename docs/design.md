@@ -16,6 +16,15 @@
 
 The state machine lives in a pure Swift type so it can be unit tested without UI.
 
+## Launch, logo and motion
+- **Logo:** four players' rings round the picked winner, the same mark as the app icon. `LogoMark` draws it in SwiftUI; `scripts/make-icon.swift` and `scripts/make-launch-logo.swift` share its geometry.
+- **Launch screen:** the winner's mark (`LaunchLogo`, vector PDF, light and dark) on the plain launch background.
+- **Splash:** starts on the launch screen's exact frame. The rings spring in one by one, the winner pops with a ripple, the name appears and it all fades into the play area, about 1.2 s. It takes no touches: the first finger goes straight to the play area and dismisses it. Reduce Motion makes it a short cross-fade.
+- **Rings:** a finger landing springs its ring up with a small overshoot and a ripple. The countdown arc runs over a faint track and glows more as the pick nears. Winners pop with a bigger ripple (several winners one after another); losers shrink as they fade. After the reset the result fades out over 0.35 s instead of vanishing.
+- **Prompt:** messages cross-fade; countdown digits roll.
+- **Battery:** the rings layer stops redrawing when nothing is on screen.
+- Every motion has a Reduce Motion fallback of fades and colour changes.
+
 ## Haptics (Core Haptics)
 - Light transient tap when a finger lands.
 - Soft ticks during the countdown, one per second, rising in intensity.

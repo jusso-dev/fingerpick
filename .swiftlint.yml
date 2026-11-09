@@ -1,5 +1,7 @@
 included:
   - FingerPick
+  - FingerPickWidgets
+  - Shared
   - Packages/FingerPickKit/Sources
   - Tests
   - Packages/FingerPickKit/Tests

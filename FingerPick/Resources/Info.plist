@@ -8,11 +8,14 @@
 	<!-- Live Activity for the last result (#29); off by default in Settings. -->
 	<key>NSSupportsLiveActivities</key>
 	<true/>
-	<!-- Launch screen: plain background matching the first frame (white in light mode, black in dark). -->
+	<!-- Launch screen: the winner's mark from the icon on a plain background (white in light mode,
+	     black in dark). The splash (SplashView) starts on this exact frame and animates from it. -->
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>
 		<string>LaunchBackground</string>
+		<key>UIImageName</key>
+		<string>LaunchLogo</string>
 	</dict>
 </dict>
 </plist>

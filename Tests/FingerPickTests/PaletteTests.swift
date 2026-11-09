@@ -1,4 +1,5 @@
 import FingerPickKit
+import SwiftUI
 import Testing
 import UIKit
 @testable import FingerPick
@@ -26,6 +27,21 @@ struct PaletteTests {
         for index in 0..<PlayerMarker.paletteSize {
             let colour = try #require(UIColor(named: "Players/Player\(index)", in: .main, compatibleWith: traits))
             #expect(contrast(colour.resolvedColor(with: traits), background) >= 3, "Player\(index) in \(style.rawValue)")
+        }
+    }
+
+    @Test(arguments: [ColorScheme.light, .dark])
+    func badgeTextHasFourPointFiveToOneContrast(scheme: ColorScheme) {
+        var environment = EnvironmentValues()
+        environment.colorScheme = scheme
+        func uiColour(_ colour: Color) -> UIColor {
+            let c = colour.resolve(in: environment)
+            return UIColor(red: CGFloat(c.red), green: CGFloat(c.green), blue: CGFloat(c.blue), alpha: 1)
+        }
+        for slot in 0..<PlayerMarker.paletteSize {
+            let fill = Palette.colour(PlayerMarker(slot: slot))
+            let text = Palette.text(on: fill, in: environment)
+            #expect(contrast(uiColour(text), uiColour(fill)) >= 4.5, "Player\(slot) in \(scheme)")
         }
     }
 

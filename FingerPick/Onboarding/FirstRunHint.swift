@@ -6,11 +6,24 @@ struct FirstRunHint: View {
 
     let dismiss: () -> Void
     @State private var isAnimating = false
+    @ScaledMetric(relativeTo: .largeTitle) private var iconSize = 44
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
+        // At the largest text sizes on the small outer display the card scrolls, so the button
+        // is never pushed off screen.
+        ViewThatFits(in: .vertical) {
+            card
+            ScrollView { card }
+                .scrollBounceBehavior(.basedOnSize)
+        }
+        .onAppear { isAnimating = !reduceMotion }
+    }
+
+    private var card: some View {
         VStack(spacing: 16) {
             Image(systemName: "hand.point.up.left.fill")
-                .font(.system(size: 44))
+                .font(.system(size: iconSize))
                 .symbolEffect(.bounce, options: .repeat(.periodic(delay: 0.8)), value: isAnimating)
                 .foregroundStyle(.tint)
                 .accessibilityHidden(true)
@@ -33,7 +46,6 @@ struct FirstRunHint: View {
         .padding()
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("hint")
-        .onAppear { isAnimating = true }
     }
 }
 

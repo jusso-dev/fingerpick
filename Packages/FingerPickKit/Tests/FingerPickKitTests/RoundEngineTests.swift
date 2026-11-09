@@ -285,18 +285,26 @@ struct RoundEngineEnvironmentTests {
         _ = engine.cancelAllFingers(at: 5)
         #expect(engine.environmentChanged(at: 5.1).isEmpty)
         #expect(engine.isResultPinned)
-        #expect(engine.nextDeadline(after: 5.1) == nil)
-        #expect(engine.tick(at: 60).isEmpty)
+        #expect(engine.nextDeadline(after: 5.1) == 35.1)
+        #expect(engine.tick(at: 30).isEmpty)
         #expect(engine.result == .winners([p0]))
         // The next finger clears the pinned result and starts a new round.
-        #expect(engine.fingerDown(p2, at: 61) == [.reset, .playerJoined(p2)])
+        #expect(engine.fingerDown(p2, at: 31) == [.reset, .playerJoined(p2)])
+    }
+
+    @Test func pinnedResultClearsItselfSoTheScreenCanSleep() {
+        var engine = engineWithResult()
+        _ = engine.environmentChanged(at: 5)
+        #expect(engine.tick(at: 34.9).isEmpty)
+        #expect(engine.tick(at: 35) == [.reset])
+        #expect(engine.phase == .waiting)
     }
 
     @Test func pinnedResultIgnoresLateCancel() {
         var engine = engineWithResult()
         _ = engine.environmentChanged(at: 5)
         #expect(engine.cancelAllFingers(at: 5.1).isEmpty)
-        #expect(engine.resetDeadline == nil)
+        #expect(engine.resetDeadline == 35)
         #expect(engine.dismissResult(at: 6) == [.reset])
     }
 

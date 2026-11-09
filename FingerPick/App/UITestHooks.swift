@@ -27,6 +27,13 @@ enum UITestHooks {
         return nil
     }
 
+    /// `-uitest-fingers <n>` puts n fake fingers down at launch, with the injector buttons hidden,
+    /// so App Store screenshots show no debug controls.
+    static var launchFingers: Int? {
+        guard isEnabled, let index = arguments.firstIndex(of: "-uitest-fingers"), index + 1 < arguments.count else { return nil }
+        return Int(arguments[index + 1])
+    }
+
     private static var arguments: [String] { ProcessInfo.processInfo.arguments }
 }
 
@@ -36,13 +43,27 @@ struct TestTouchInjector: View {
     @State private var fingers: [NSObject] = []
 
     var body: some View {
+        if let count = UITestHooks.launchFingers {
+            Color.clear
+                .frame(width: 1, height: 1)
+                .task { for _ in 0..<count { addFinger() } }
+        } else {
+            buttons
+        }
+    }
+
+    private func addFinger() {
+        let finger = NSObject()
+        let index = fingers.count
+        fingers.append(finger)
+        let point = CGPoint(x: 80 + CGFloat(index % 3) * 110, y: 260 + CGFloat(index / 3) * 160)
+        model.handle(.began(key: ObjectIdentifier(finger), location: point))
+    }
+
+    private var buttons: some View {
         HStack {
             Button {
-                let finger = NSObject()
-                let index = fingers.count
-                fingers.append(finger)
-                let point = CGPoint(x: 80 + CGFloat(index % 3) * 110, y: 260 + CGFloat(index / 3) * 160)
-                model.handle(.began(key: ObjectIdentifier(finger), location: point))
+                addFinger()
             } label: {
                 Text(verbatim: "Add finger")
             }

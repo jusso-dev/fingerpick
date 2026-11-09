@@ -58,7 +58,10 @@ jobs:
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
         run: |
           set -o pipefail
-          # Build number from the workflow run number, so every upload is unique.
+          # Build number from the run number and attempt, so every upload is unique and increasing,
+          # including "Re-run jobs" after a partial upload.
+          BUILD_NUMBER=$(( ${{ github.run_number }} * 100 + ${{ github.run_attempt }} ))
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
           xcodebuild archive \
             -project FingerPick.xcodeproj -scheme FingerPick \
             -configuration Release \
@@ -69,7 +72,7 @@ jobs:
             -authenticationKeyID "$ASC_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
-            CURRENT_PROJECT_VERSION="${{ github.run_number }}"
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
 
       - name: Upload to TestFlight
         env:
@@ -89,7 +92,7 @@ jobs:
             -authenticationKeyPath "$ASC_KEY_PATH" \
             -authenticationKeyID "$ASC_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_ISSUER_ID"
-          echo "Uploaded build ${{ github.run_number }} to App Store Connect." >> "$GITHUB_STEP_SUMMARY"
+          echo "Uploaded build $BUILD_NUMBER to App Store Connect." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Remove API key
         if: always()

@@ -9,7 +9,7 @@
 | Launch, first-run hint, settings, simulated rounds in every mode | `Tests/FingerPickUITests` | Yes |
 | Screenshots in light, dark and AX5 | `FingerPickScreenshotTests`, attached to the `.xcresult` | Yes (kept, not diffed) |
 
-UI tests can't put several fingers down, so the app accepts `-uitest` (debug builds only). This adds an **Add finger / Lift all** injector that feeds fake touches through the real model. Related arguments: `-uitest-reset` clears saved settings, `-uitest-seed <n>` makes picks deterministic, `-uitest-dark` / `-uitest-light` force an appearance. Any setting can be overridden for a launch with its key, for example `-countdownSeconds 1 -mode teams`.
+UI tests can't put several fingers down, so the app accepts `-uitest` (debug builds only). This adds an **Add finger / Lift all** injector that feeds fake touches through the real model. Related arguments: `-uitest-reset` clears saved settings, `-uitest-seed <n>` makes picks deterministic, `-uitest-dark` / `-uitest-light` force an appearance. `-uitest-fingers <n>` puts n fingers down at launch with the injector hidden, for App Store screenshots. The splash is skipped under `-uitest`. Any setting can be overridden for a launch with its key, for example `-countdownSeconds 1 -mode teams`.
 
 Fold geometry is tested in code with fake division and occlusion regions (`FoldLayoutTests`, `PlayLayoutTests`, `FoldHandlingTests`). The iPhone Duo simulator has no supported `simctl` or XCUITest control for posture and boots closed, so CI covers the outer display only. Don't add unsupported community fold tools to CI.
 

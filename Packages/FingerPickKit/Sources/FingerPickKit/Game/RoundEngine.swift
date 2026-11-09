@@ -17,6 +17,8 @@ public struct RoundConfiguration: Equatable, Sendable {
     }
     /// Pause after the last finger lifts before returning to waiting.
     public var resetDelay: TimeInterval
+    /// How long a result kept across a fold stays once every finger is up, so the screen can sleep.
+    public var pinnedResultDuration: TimeInterval
     public var mode: PickMode
 
     public init(
@@ -24,12 +26,14 @@ public struct RoundConfiguration: Equatable, Sendable {
         settleDelay: TimeInterval = 1,
         countdownDuration: TimeInterval = 3,
         resetDelay: TimeInterval = 0.5,
+        pinnedResultDuration: TimeInterval = 30,
         mode: PickMode = .single
     ) {
         self.minimumPlayers = max(2, minimumPlayers)
         self.settleDelay = settleDelay
         self.countdownDuration = countdownDuration.clamped(to: Self.countdownRange)
         self.resetDelay = resetDelay
+        self.pinnedResultDuration = pinnedResultDuration
         self.mode = mode
     }
 
@@ -72,7 +76,8 @@ public struct RoundEngine {
     public private(set) var players: Set<PlayerID> = []
     /// When a showing result returns to waiting (set once every finger has lifted).
     public private(set) var resetDeadline: TimeInterval?
-    /// True when a result was kept across a fold. It stays until dismissed or a new finger lands.
+    /// True when a result was kept across a fold. It stays until dismissed, a new finger lands or
+    /// `pinnedResultDuration` passes with every finger up.
     public private(set) var isResultPinned = false
 
     private var picker: any Picker
@@ -117,9 +122,7 @@ public struct RoundEngine {
         guard players.remove(id) != nil else { return [] }
         var events: [RoundEvent] = [.playerLeft(id)]
         if result != nil {
-            if players.isEmpty, !isResultPinned {
-                resetDeadline = now + configuration.resetDelay
-            }
+            if players.isEmpty { scheduleReset(at: now) }
         } else {
             events += rosterChanged(at: now)
         }
@@ -132,7 +135,7 @@ public struct RoundEngine {
         let left = players.sorted().map(RoundEvent.playerLeft)
         players.removeAll()
         if result != nil {
-            if !isResultPinned { resetDeadline = now + configuration.resetDelay }
+            scheduleReset(at: now)
             return left
         }
         lastRoundCancelAt = now
@@ -147,8 +150,8 @@ public struct RoundEngine {
         if result != nil {
             // Keep the result and let the UI lay it out again on the new display.
             players.removeAll()
-            resetDeadline = nil
             isResultPinned = true
+            scheduleReset(at: now)
             return []
         }
         let recentlyCancelled = lastRoundCancelAt.map { now - $0 <= 1 } ?? false
@@ -236,6 +239,12 @@ public struct RoundEngine {
         phase = players.count >= configuration.requiredPlayers ? .stabilising(since: now) : .waiting
         lastTickSecond = nil
         return wasCountingDown ? [.countdownCancelled] : []
+    }
+
+    /// Every finger is up while a result shows: return to waiting after a short pause, or a long
+    /// one if the result was kept across a fold.
+    private mutating func scheduleReset(at now: TimeInterval) {
+        resetDeadline = now + (isResultPinned ? configuration.pinnedResultDuration : configuration.resetDelay)
     }
 
     private mutating func reset() -> [RoundEvent] {

@@ -4,13 +4,17 @@ import UIKit
 
 /// What VoiceOver should say for a batch of round events (#16). Pure, so it's unit-tested.
 enum Announcements {
-    static func text(for events: [RoundEvent], fingerCount: Int, reveal: Reveal?) -> String? {
+    static func text(
+        for events: [RoundEvent], fingerCount: Int, reveal: Reveal?, interruption: EnvironmentChange? = nil
+    ) -> String? {
         for event in events.reversed() {
             switch event {
             case .selected:
                 return reveal.map(ResultText.spoken(for:))
             case .interrupted:
-                return String(localized: "Phone folded, everyone put your fingers back down")
+                return interruption == .rotated
+                    ? String(localized: "Screen rotated, everyone put your fingers back down")
+                    : String(localized: "Phone folded, everyone put your fingers back down")
             case .countdownCancelled:
                 return String(localized: "Countdown cancelled")
             case .countdownStarted:
@@ -47,20 +51,33 @@ final class Announcer {
         }
         guard !onlyFingers else {
             pendingCount?.cancel()
+            // Players lift straight after the reveal; a finger count would cut the result off.
+            guard model.reveal == nil else { return }
             pendingCount = Task { [weak model] in
                 try? await Task.sleep(for: .milliseconds(600))
                 guard !Task.isCancelled, let model else { return }
-                Self.post(Announcements.fingerCountText(model.touches.count))
+                Self.post(Announcements.fingerCountText(model.touches.count), priority: .default)
             }
             return
         }
         pendingCount?.cancel()
-        if let text = Announcements.text(for: events, fingerCount: model.touches.count, reveal: model.reveal) {
-            Self.post(text)
+        let text = Announcements.text(
+            for: events, fingerCount: model.touches.count, reveal: model.reveal, interruption: model.interruption?.change
+        )
+        guard let text else { return }
+        // The result must not be cut off; "New round" waits for it to finish.
+        let priority: UIAccessibilityPriority = if events.contains(where: { if case .selected = $0 { true } else { false } }) {
+            .high
+        } else if events.contains(.reset) {
+            .low
+        } else {
+            .default
         }
+        Self.post(text, priority: priority)
     }
 
-    private static func post(_ text: String) {
-        AccessibilityNotification.Announcement(text).post()
+    private static func post(_ text: String, priority: UIAccessibilityPriority) {
+        let announcement = NSAttributedString(string: text, attributes: [.accessibilitySpeechAnnouncementPriority: priority])
+        UIAccessibility.post(notification: .announcement, argument: announcement)
     }
 }

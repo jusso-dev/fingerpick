@@ -24,40 +24,33 @@ final class AppStoreScreenshots: XCTestCase {
         add(attachment)
     }
 
-    private func addFingers(_ app: XCUIApplication, _ count: Int) {
-        for _ in 0..<count { app.buttons["uitest.addFinger"].tap() }
-    }
-
     func testWaitingScreen() {
         save(launch(), "1-waiting")
     }
 
     func testCountdown() {
-        let app = launch(["-countdownSeconds", "5"])
-        addFingers(app, 5)
+        // Fingers go down at launch so the debug injector buttons never show.
+        let app = launch(["-countdownSeconds", "5", "-uitest-fingers", "5"])
         sleep(2)
         save(app, "2-countdown")
     }
 
     func testWinnerReveal() {
-        let app = launch(["-countdownSeconds", "1"])
-        addFingers(app, 5)
+        let app = launch(["-countdownSeconds", "1", "-uitest-fingers", "5"])
         XCTAssertTrue(app.staticTexts["result"].waitForExistence(timeout: 10))
         sleep(1)
         save(app, "3-winner")
     }
 
     func testTeams() {
-        let app = launch(["-countdownSeconds", "1", "-mode", "teams", "-teamCount", "2"])
-        addFingers(app, 6)
+        let app = launch(["-countdownSeconds", "1", "-mode", "teams", "-teamCount", "2", "-uitest-fingers", "6"])
         XCTAssertTrue(app.staticTexts["result"].waitForExistence(timeout: 10))
         sleep(1)
         save(app, "4-teams")
     }
 
     func testTurnOrder() {
-        let app = launch(["-countdownSeconds", "1", "-mode", "order"])
-        addFingers(app, 5)
+        let app = launch(["-countdownSeconds", "1", "-mode", "order", "-uitest-fingers", "5"])
         XCTAssertTrue(app.staticTexts["result"].waitForExistence(timeout: 10))
         sleep(3)
         save(app, "5-order")

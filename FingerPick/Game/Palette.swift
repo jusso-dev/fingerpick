@@ -9,6 +9,15 @@ enum Palette {
         Color("Players/Player\(marker.colourIndex)")
     }
 
+    /// Black or white, whichever contrasts more with `colour`. The worse of the two is never below
+    /// 4.58:1, so badge text on any player colour meets the 4.5:1 minimum in light and dark mode.
+    static func text(on colour: Color, in environment: EnvironmentValues) -> Color {
+        let resolved = colour.resolve(in: environment)
+        let luminance = 0.2126 * Double(resolved.linearRed) + 0.7152 * Double(resolved.linearGreen)
+            + 0.0722 * Double(resolved.linearBlue)
+        return (luminance + 0.05) / 0.05 >= 1.05 / (luminance + 0.05) ? .black : .white
+    }
+
     static func symbol(_ marker: PlayerMarker) -> String {
         symbols[marker.shapeIndex]
     }

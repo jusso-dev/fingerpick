@@ -13,6 +13,7 @@
 		1CC094945B4B8F95550A39AF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A7A9D9DA75CBDA5A306E4 /* RootView.swift */; };
 		20DCCD0604F09EF05AC89679 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2ADC4E61158061E19710A4C /* GameModelTests.swift */; };
 		25811B7A6B50218545F32A06 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 766D098D0E94E15C08E34E94 /* Localizable.xcstrings */; };
+		273552AA6EED17D93D2E1941 /* RingMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1619F7C24651A9F3FC531358 /* RingMotion.swift */; };
 		2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B07753D58C8E5B62F56E2 /* MultitouchView.swift */; };
 		35230AC179A789DDC473B626 /* HistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E19656FB68DAEAC81F1E5 /* HistoryStore.swift */; };
 		367EAB65541AB3DB1C6FF164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 		69164DDDFE9E18BEAE8E343B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7330B8F9D840213AE446A011 /* SettingsView.swift */; };
 		6B297E27ADAD27764C666584 /* AppStoreScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46BE96797584F91FBF4A1F92 /* AppStoreScreenshots.swift */; };
 		6F7610710A9FCD686B2169D9 /* AccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BB6A3C223C63DE83ED310D /* AccessibilityTests.swift */; };
+		72FDA72D7FB33409BDB5C4DC /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2283EACC1912E9C1BF5F1F /* SplashView.swift */; };
 		829A5D220D24E8AA285671A9 /* FingerPickKit in Frameworks */ = {isa = PBXBuildFile; productRef = B24816A4773BC0E55DED29FF /* FingerPickKit */; };
 		8527EF39B567DF673AA44C52 /* FirstRunHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99ABDF9B4470285A60DC5FF /* FirstRunHint.swift */; };
 		88C47ED56C19E7C6AABBFE40 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89A170E673484673B78C820 /* LiveActivityController.swift */; };
@@ -42,6 +44,7 @@
 		BF047F2634EE9BC302C05ECE /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CD49966EC08CEF081468440 /* ResultView.swift */; };
 		C2DBC9C596869085FFDD7CF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CF307AEDE8A289EE2EECF /* Assets.xcassets */; };
 		CF0932C8DCC5BDDD539B4453 /* Announcer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11295CD10F529C3AAB9B5E79 /* Announcer.swift */; };
+		DA4DEF4D1E29D1D6386F51A7 /* LogoMark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E173273B313DBA6886AE658 /* LogoMark.swift */; };
 		E8F4E19938834803A6FD4231 /* HapticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1186ABD262D48E8FAE9978B /* HapticsService.swift */; };
 		EEAE518EDBA65EE043C66B81 /* FingerPickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A58EEE94CF174191D0B16A5 /* FingerPickApp.swift */; };
 		FF9D7EE4CD7ACB35832D2975 /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CADE28808792CBB54D18D4 /* GameSettings.swift */; };
@@ -89,6 +92,7 @@
 		08017B92C8D4FA710FE26F70 /* HapticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsTests.swift; sourceTree = "<group>"; };
 		0B5BE2A7A442C1C624D638F0 /* UITestHooks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestHooks.swift; sourceTree = "<group>"; };
 		11295CD10F529C3AAB9B5E79 /* Announcer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcer.swift; sourceTree = "<group>"; };
+		1619F7C24651A9F3FC531358 /* RingMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingMotion.swift; sourceTree = "<group>"; };
 		19BB6A3C223C63DE83ED310D /* AccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityTests.swift; sourceTree = "<group>"; };
 		1DC20C61590045F120E5B942 /* RingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingsView.swift; sourceTree = "<group>"; };
 		23DB38DAC778224D3BA059A1 /* HistoryStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStoreTests.swift; sourceTree = "<group>"; };
@@ -96,6 +100,7 @@
 		3B8939C06F03D0A001700F8D /* FingerPick.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FingerPick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46BE96797584F91FBF4A1F92 /* AppStoreScreenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreScreenshots.swift; sourceTree = "<group>"; };
 		4CD49966EC08CEF081468440 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		4E173273B313DBA6886AE658 /* LogoMark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoMark.swift; sourceTree = "<group>"; };
 		5A9B2FF401EA9B7745EE273D /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		65EE5E45CAA488D0DB4D4D9C /* PromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptView.swift; sourceTree = "<group>"; };
 		69CADE28808792CBB54D18D4 /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
@@ -109,6 +114,7 @@
 		89B1A921C5670973EFEA8F6C /* FingerPickWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPickWidgets.swift; sourceTree = "<group>"; };
 		914618FA81D0A86A2AC48976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9C3E19656FB68DAEAC81F1E5 /* HistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStore.swift; sourceTree = "<group>"; };
+		9E2283EACC1912E9C1BF5F1F /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		A6398057F4CA0DE0063ADF05 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A72CF307AEDE8A289EE2EECF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C167D7D294CA118DCB38C717 /* FoldHandlingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldHandlingTests.swift; sourceTree = "<group>"; };
@@ -148,6 +154,15 @@
 			path = FingerPickUITests;
 			sourceTree = "<group>";
 		};
+		2306C1CCA7CE803D44002ACF /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				4E173273B313DBA6886AE658 /* LogoMark.swift */,
+				9E2283EACC1912E9C1BF5F1F /* SplashView.swift */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
 		23D5752804E4E0FD9CA2B304 /* FingerPickWidgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +179,7 @@
 				5A9B2FF401EA9B7745EE273D /* Palette.swift */,
 				65EE5E45CAA488D0DB4D4D9C /* PromptView.swift */,
 				4CD49966EC08CEF081468440 /* ResultView.swift */,
+				1619F7C24651A9F3FC531358 /* RingMotion.swift */,
 				1DC20C61590045F120E5B942 /* RingsView.swift */,
 			);
 			path = Game;
@@ -233,6 +249,7 @@
 				D16FC44460091EA1F014C4DD /* App */,
 				345901FC8408711F82C47B77 /* Game */,
 				BEDFCD3AE7FC7CF1EA2C2CC4 /* Haptics */,
+				2306C1CCA7CE803D44002ACF /* Launch */,
 				400A6F8A37A06AF75FAC28C0 /* Onboarding */,
 				9FCEC934526C7670086E47D3 /* Resources */,
 				E414EDA8E05EEDDA4285DE07 /* Settings */,
@@ -481,14 +498,17 @@
 				8FF69138CBAA5579AF535084 /* HistoryView.swift in Sources */,
 				3ED505A2FDD2BFE8341E2865 /* IdleTimerController.swift in Sources */,
 				88C47ED56C19E7C6AABBFE40 /* LiveActivityController.swift in Sources */,
+				DA4DEF4D1E29D1D6386F51A7 /* LogoMark.swift in Sources */,
 				2906C17D61CD199E7560979B /* MultitouchView.swift in Sources */,
 				9ECADB5EF3C15242FDA0EA12 /* Palette.swift in Sources */,
 				0195BE5506E15EB613F7D703 /* PromptView.swift in Sources */,
 				9C2621B8AFC58F62FF3B68F3 /* ResultActivityAttributes.swift in Sources */,
 				BF047F2634EE9BC302C05ECE /* ResultView.swift in Sources */,
+				273552AA6EED17D93D2E1941 /* RingMotion.swift in Sources */,
 				63FBCA393803BBD914137E09 /* RingsView.swift in Sources */,
 				1CC094945B4B8F95550A39AF /* RootView.swift in Sources */,
 				69164DDDFE9E18BEAE8E343B /* SettingsView.swift in Sources */,
+				72FDA72D7FB33409BDB5C4DC /* SplashView.swift in Sources */,
 				1723A0E60D1FD938DDFBB27B /* UITestHooks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

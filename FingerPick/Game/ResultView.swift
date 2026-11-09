@@ -1,7 +1,8 @@
 import FingerPickKit
 import SwiftUI
 
-/// The result label, shown over the winner's colour once the reveal has grown.
+/// The result label, shown over the winner's colour once the reveal has grown, or on a card
+/// over the rings when no colour fills the screen (several winners, teams, turn order).
 struct ResultView: View {
     let reveal: Reveal
 
@@ -12,7 +13,13 @@ struct ResultView: View {
         Text(ResultText.headline(for: reveal))
             .font(.largeTitle.weight(.bold))
             .multilineTextAlignment(.center)
-            .foregroundStyle(Color(.systemBackground))
+            .foregroundStyle(reveal.fillsScreen ? Color(.systemBackground) : .primary)
+            .padding(reveal.fillsScreen ? 0 : 16)
+            .background {
+                if !reveal.fillsScreen {
+                    RoundedRectangle(cornerRadius: 20).fill(.regularMaterial)
+                }
+            }
             .padding()
             .opacity(isVisible ? 1 : 0)
             .scaleEffect(isVisible || reduceMotion ? 1 : 0.9)
